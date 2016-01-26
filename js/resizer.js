@@ -111,6 +111,14 @@
       // Координаты задаются от центра холста.
       this._ctx.drawImage(this._image, displX, displY);
 
+      this._ctx.fillStyle = "rgba(0,0,0, .8)";
+      this._ctx.fillRect(
+        this._resizeConstraint.side / 2,
+        -this._container.height,
+        (this._container.width - this._resizeConstraint.side ) / 2,
+        (this._container.height - this._resizeConstraint.side ) / 2);
+
+
       // Отрисовка прямоугольника, обозначающего область изображения после
       // кадрирования. Координаты задаются от центра.
       this._ctx.strokeRect(
