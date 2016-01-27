@@ -98,7 +98,7 @@
       this._ctx.lineDashOffset = 7;
 
       // Цвет заливки
-      this._ctx.fillStyle = 'rgba(0, 0, 0, .8';
+      this._ctx.fillStyle = 'rgba(0, 0, 0, .8)';
 
       // Стиль шрифта
       this._ctx.font = '24px sans-serif';
@@ -120,7 +120,7 @@
       // нужно отрисовать и координаты его верхнего левого угла.
       // Координаты задаются от центра холста.
       this._ctx.drawImage(this._image, displX, displY);
-      
+
       // Отрисовка чёрного слоя с прозрачностью 80% под размер кадрируемого изображения.
       this._ctx.beginPath();
       this._ctx.moveTo(displX, displY);
@@ -151,13 +151,49 @@
       this._ctx.closePath();
       this._ctx.fill('evenodd');
 
+      // Отрисовка  точками прямоугольника, обозначающего область изображения после
+      // кадрирования.
+      // this._ctx.fillStyle = '#ffe753';
+      // debugger;
+      // var arcRadius = 15;
+      // var lineLength = this._resizeConstraint.side - this._ctx.lineWidth / 2;
+      // var arcStep = 40;
+      // var startX = (-this._resizeConstraint.side / 2) - this._ctx.lineWidth / 2;
+      // var startY = (-this._resizeConstraint.side / 2) - this._ctx.lineWidth / 2;
+      //
+      // var drawArc = function(x, y, radius) {
+      //   this._ctx.arc(x, y, radius, 0, Math.PI * 2, true);
+      //   this._ctx.fill();
+      //   this._ctx.closePath();
+      // };
+      //
+      // var drawBorder = function(startX, startY, lineLength, arcStep) {
+      // while(startX < lineLength) {
+      //   drawArc(startX, startY, arcRadius);
+      //   startX += arcStep;
+      // }
+      // while(startY < lineLength) {
+      //   drawArc(startX, startY, arcRadius);
+      //   startY += arcStep;
+      // }
+      // while( startX > (startY - lineLength)) {
+      //   drawArc(startX, startY, arcRadius);
+      //   startX -= arcStep;
+      // }
+      // while(startY > startX) {
+      //   drawArc(startX, startY, arcRadius);
+      //   startY -= arcStep;
+      //   }
+      // };
+      //
+      // drawBorder(startX, startY, lineLength, arcStep);
       // Отрисовка прямоугольника, обозначающего область изображения после
       // кадрирования. Координаты задаются от центра.
-      this._ctx.strokeRect(
-          (-this._resizeConstraint.side / 2) - this._ctx.lineWidth / 2,
-          (-this._resizeConstraint.side / 2) - this._ctx.lineWidth / 2,
-          this._resizeConstraint.side - this._ctx.lineWidth / 2,
-          this._resizeConstraint.side - this._ctx.lineWidth / 2);
+      // this._ctx.strokeRect(
+      //     (-this._resizeConstraint.side / 2) - this._ctx.lineWidth / 2,
+      //     (-this._resizeConstraint.side / 2) - this._ctx.lineWidth / 2,
+      //     this._resizeConstraint.side - this._ctx.lineWidth / 2,
+      //     this._resizeConstraint.side - this._ctx.lineWidth / 2);
 
       // Цвет заливки текста
       this._ctx.fillStyle = '#fff';
