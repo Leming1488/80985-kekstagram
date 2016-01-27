@@ -88,14 +88,21 @@
       // чего-либо с другой обводкой.
 
       // Толщина линии.
-      // this._ctx.lineWidth = 6;
-      // // Цвет обводки.
-      // this._ctx.strokeStyle = '#ffe753';
-      // // Размер штрихов. Первый элемент массива задает длину штриха, второй
-      // // расстояние между соседними штрихами.
-      // this._ctx.setLineDash([15, 10]);
-      // // Смещение первого штриха от начала линии.
-      // this._ctx.lineDashOffset = 7;
+      this._ctx.lineWidth = 6;
+      // Цвет обводки.
+      this._ctx.strokeStyle = '#ffe753';
+      // Размер штрихов. Первый элемент массива задает длину штриха, второй
+      // расстояние между соседними штрихами.
+      this._ctx.setLineDash([15, 10]);
+      // Смещение первого штриха от начала линии.
+      this._ctx.lineDashOffset = 7;
+
+      // Стиль шрифта
+      this._ctx.font = '24px sans-serif';
+      // Горизонтальное выравнивание текста
+      this._ctx.textAlign = 'center';
+      // Выравнивает текста по вертикали
+      this._ctx.textBaseline = 'bottom';
 
       // Сохранение состояния канваса.
       // Подробней см. строку 132.
@@ -106,26 +113,11 @@
 
       var displX = -(this._resizeConstraint.x + this._resizeConstraint.side / 2);
       var displY = -(this._resizeConstraint.y + this._resizeConstraint.side / 2);
-      var rectSize = (-this._resizeConstraint.side / 2) - this._ctx.lineWidth / 2;
-      debugger;
-      var conW = this._container.width / 2;
-      var conH = this._container.height / 2;
-      var xS = ((-conW - rectSize)/2 + rectSize);
-      var yS = ((-conH - rectSize)/2 + rectSize);
       // Отрисовка изображения на холсте. Параметры задают изображение, которое
       // нужно отрисовать и координаты его верхнего левого угла.
       // Координаты задаются от центра холста.
       this._ctx.drawImage(this._image, displX, displY);
 
-      this._ctx.lineWidth = 60;
-      this._ctx.strokeStyle = '#ffe753';
-      this._ctx.strokeRect(
-        xS,
-        yS - 6,
-        this._resizeConstraint.side - this._ctx.lineWidth / 2,
-        -yS * 2);
-
-this._ctx.lineWidth = 6;
       // Отрисовка прямоугольника, обозначающего область изображения после
       // кадрирования. Координаты задаются от центра.
       this._ctx.strokeRect(
@@ -133,6 +125,15 @@ this._ctx.lineWidth = 6;
           (-this._resizeConstraint.side / 2) - this._ctx.lineWidth / 2,
           this._resizeConstraint.side - this._ctx.lineWidth / 2,
           this._resizeConstraint.side - this._ctx.lineWidth / 2);
+
+      // Цвет заливки текста
+      this._ctx.fillStyle = '#fff';
+
+      // Отрисовка размера кадрируемого изображения.
+      this._ctx.fillText(
+        this._image.naturalWidth + ' ' + '+' + ' ' + this._image.naturalHeight,
+        0,
+        (-this._resizeConstraint.side / 2) - this._ctx.lineWidth / 2);
 
       // Восстановление состояния канваса, которое было до вызова ctx.save
       // и последующего изменения системы координат. Нужно для того, чтобы
