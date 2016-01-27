@@ -97,6 +97,7 @@
       // Смещение первого штриха от начала линии.
       this._ctx.lineDashOffset = 7;
 
+      // Цвет заливки
       this._ctx.fillStyle = 'rgba(0, 0, 0, .8';
 
       // Стиль шрифта
@@ -119,7 +120,8 @@
       // нужно отрисовать и координаты его верхнего левого угла.
       // Координаты задаются от центра холста.
       this._ctx.drawImage(this._image, displX, displY);
-
+      
+      // Отрисовка чёрного слоя с прозрачностью 80% под размер кадрируемого изображения.
       this._ctx.beginPath();
       this._ctx.moveTo(displX, displY);
       this._ctx.lineTo(displX, this._container.height);
