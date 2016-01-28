@@ -30,15 +30,15 @@
       var INITIAL_SIDE_RATIO = 0.75;
       // Размер меньшей стороны изображения.
       var side = Math.min(
-          this._container.width * INITIAL_SIDE_RATIO,
-          this._container.height * INITIAL_SIDE_RATIO);
+        this._container.width * INITIAL_SIDE_RATIO,
+        this._container.height * INITIAL_SIDE_RATIO);
 
       // Изначально предлагаемое кадрирование — часть по центру с размером в 3/4
       // от размера меньшей стороны.
       this._resizeConstraint = new Square(
-          this._container.width / 2 - side / 2,
-          this._container.height / 2 - side / 2,
-          side);
+        this._container.width / 2 - side / 2,
+        this._container.height / 2 - side / 2,
+        side);
 
       // Отрисовка изначального состояния канваса.
       this.redraw();
@@ -129,8 +129,7 @@
       this._ctx.lineTo(this._container.width, displY);
       this._ctx.lineTo(displX, displY);
       this._ctx.moveTo(
-        (-this._resizeConstraint.side / 2) - this._ctx.lineWidth / 2,
-        (-this._resizeConstraint.side / 2) - this._ctx.lineWidth / 2
+        (-this._resizeConstraint.side / 2) - this._ctx.lineWidth / 2, (-this._resizeConstraint.side / 2) - this._ctx.lineWidth / 2
       );
       this._ctx.lineTo(
         (-this._resizeConstraint.side / 2) - this._ctx.lineWidth / 2,
@@ -141,52 +140,56 @@
         this._resizeConstraint.side / 2 - this._ctx.lineWidth / 2
       );
       this._ctx.lineTo(
-        this._resizeConstraint.side / 2 - this._ctx.lineWidth / 2,
-        (-this._resizeConstraint.side / 2) - this._ctx.lineWidth / 2
+        this._resizeConstraint.side / 2 - this._ctx.lineWidth / 2, (-this._resizeConstraint.side / 2) - this._ctx.lineWidth / 2
       );
       this._ctx.lineTo(
-        (-this._resizeConstraint.side / 2) - this._ctx.lineWidth / 2,
-        (-this._resizeConstraint.side / 2) - this._ctx.lineWidth / 2
+        (-this._resizeConstraint.side / 2) - this._ctx.lineWidth / 2, (-this._resizeConstraint.side / 2) - this._ctx.lineWidth / 2
       );
       this._ctx.closePath();
       this._ctx.fill('evenodd');
 
       // Отрисовка  точками прямоугольника, обозначающего область изображения после
       // кадрирования.
-      var arcRadius = 15;
-      var arcStep = 40;
+      var arcRadius = 3;
+      var arcStep = 13;
       var startX = (-this._resizeConstraint.side / 2) - this._ctx.lineWidth / 2;
       var startY = (-this._resizeConstraint.side / 2) - this._ctx.lineWidth / 2;
       var endX = this._resizeConstraint.side / 2 - this._ctx.lineWidth / 2;
+      var endY = this._resizeConstraint.side / 2 - this._ctx.lineWidth / 2;
 
-      function drawBorderX (ctx, startX, startY, endX) {
+      function drawBorderX(ctx, startX, startY, endX) {
         drawArc(ctx, startX, startY, arcRadius);
         if (startX < endX) {
-          return drawBorderX(startX + arcStep, startY, endX);
+          return drawBorderX(ctx, startX + arcStep, startY, endX);
         } else {
           return;
         }
       }
 
-      function drawBorderY (ctx, startX, startY, endY) {
+      function drawBorderY(ctx, startX, startY, endY) {
         drawArc(ctx, startX, startY, arcRadius);
         if (startY < endY) {
-          return drawBorderY(startX, startY + arcStep, endY);
+          return drawBorderY(ctx, startX, startY + arcStep, endY);
         } else {
           return;
         }
       }
 
-      var drawArc = function (ctx, startX, startY, arcRadius) {
+      var drawArc = function(ctx, startX, startY, arcRadius) {
+        console.log(ctx);
         ctx.beginPath();
         ctx.arc(startX, startY, arcRadius, 0, Math.PI * 2, true);
         ctx.fill();
         ctx.closePath();
-      }
+      };
 
+      // Цвет заливки рамки с точками
       this._ctx.fillStyle = '#ffe753';
 
-      drawBorderX(this._ctx, startX, startY, 300);
+      drawBorderX(this._ctx, startX, startY, endX);
+      drawBorderX(this._ctx, startX, endY, endX);
+      drawBorderY(this._ctx, startX, startY, endY);
+      drawBorderY(this._ctx, endX, startY, endY);
       // Отрисовка прямоугольника, обозначающего область изображения после
       // кадрирования. Координаты задаются от центра.
       // this._ctx.strokeRect(
@@ -201,8 +204,7 @@
       // Отрисовка размера кадрируемого изображения.
       this._ctx.fillText(
         this._image.naturalWidth + ' ' + '+' + ' ' + this._image.naturalHeight,
-        0,
-        (-this._resizeConstraint.side / 2) - this._ctx.lineWidth / 2);
+        0, (-this._resizeConstraint.side / 2) - this._ctx.lineWidth / 2);
 
       // Восстановление состояния канваса, которое было до вызова ctx.save
       // и последующего изменения системы координат. Нужно для того, чтобы
@@ -245,8 +247,8 @@
      */
     updatePosition: function(x, y) {
       this.moveConstraint(
-          this._cursorPosition.x - x,
-          this._cursorPosition.y - y);
+        this._cursorPosition.x - x,
+        this._cursorPosition.y - y);
       this._cursorPosition = new Coordinate(x, y);
     },
 
@@ -306,9 +308,9 @@
      */
     moveConstraint: function(deltaX, deltaY, deltaSide) {
       this.setConstraint(
-          this._resizeConstraint.x + (deltaX || 0),
-          this._resizeConstraint.y + (deltaY || 0),
-          this._resizeConstraint.side + (deltaSide || 0));
+        this._resizeConstraint.x + (deltaX || 0),
+        this._resizeConstraint.y + (deltaY || 0),
+        this._resizeConstraint.side + (deltaSide || 0));
     },
 
     /**
@@ -364,9 +366,7 @@
       var temporaryCtx = temporaryCanvas.getContext('2d');
       temporaryCanvas.width = this._resizeConstraint.side;
       temporaryCanvas.height = this._resizeConstraint.side;
-      temporaryCtx.drawImage(this._image,
-          -this._resizeConstraint.x,
-          -this._resizeConstraint.y);
+      temporaryCtx.drawImage(this._image, -this._resizeConstraint.x, -this._resizeConstraint.y);
       imageToExport.src = temporaryCanvas.toDataURL('image/png');
 
       return imageToExport;
