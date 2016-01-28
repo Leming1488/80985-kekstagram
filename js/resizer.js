@@ -153,40 +153,40 @@
 
       // Отрисовка  точками прямоугольника, обозначающего область изображения после
       // кадрирования.
-      // this._ctx.fillStyle = '#ffe753';
-      // debugger;
-      // var arcRadius = 15;
-      // var lineLength = this._resizeConstraint.side - this._ctx.lineWidth / 2;
-      // var arcStep = 40;
-      // var startX = (-this._resizeConstraint.side / 2) - this._ctx.lineWidth / 2;
-      // var startY = (-this._resizeConstraint.side / 2) - this._ctx.lineWidth / 2;
-      //
-      // var drawArc = function(x, y, radius) {
-      //   this._ctx.arc(x, y, radius, 0, Math.PI * 2, true);
-      //   this._ctx.fill();
-      //   this._ctx.closePath();
-      // };
-      //
-      // var drawBorder = function(startX, startY, lineLength, arcStep) {
-      // while(startX < lineLength) {
-      //   drawArc(startX, startY, arcRadius);
-      //   startX += arcStep;
-      // }
-      // while(startY < lineLength) {
-      //   drawArc(startX, startY, arcRadius);
-      //   startY += arcStep;
-      // }
-      // while( startX > (startY - lineLength)) {
-      //   drawArc(startX, startY, arcRadius);
-      //   startX -= arcStep;
-      // }
-      // while(startY > startX) {
-      //   drawArc(startX, startY, arcRadius);
-      //   startY -= arcStep;
-      //   }
-      // };
-      //
-      // drawBorder(startX, startY, lineLength, arcStep);
+      var arcRadius = 15;
+      var arcStep = 40;
+      var startX = (-this._resizeConstraint.side / 2) - this._ctx.lineWidth / 2;
+      var startY = (-this._resizeConstraint.side / 2) - this._ctx.lineWidth / 2;
+      var endX = this._resizeConstraint.side / 2 - this._ctx.lineWidth / 2;
+
+      function drawBorderX (ctx, startX, startY, endX) {
+        drawArc(ctx, startX, startY, arcRadius);
+        if (startX < endX) {
+          return drawBorderX(startX + arcStep, startY, endX);
+        } else {
+          return;
+        }
+      }
+
+      function drawBorderY (ctx, startX, startY, endY) {
+        drawArc(ctx, startX, startY, arcRadius);
+        if (startY < endY) {
+          return drawBorderY(startX, startY + arcStep, endY);
+        } else {
+          return;
+        }
+      }
+
+      var drawArc = function (ctx, startX, startY, arcRadius) {
+        ctx.beginPath();
+        ctx.arc(startX, startY, arcRadius, 0, Math.PI * 2, true);
+        ctx.fill();
+        ctx.closePath();
+      }
+
+      this._ctx.fillStyle = '#ffe753';
+
+      drawBorderX(this._ctx, startX, startY, 300);
       // Отрисовка прямоугольника, обозначающего область изображения после
       // кадрирования. Координаты задаются от центра.
       // this._ctx.strokeRect(
