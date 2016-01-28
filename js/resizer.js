@@ -154,6 +154,7 @@
       var endX = this._resizeConstraint.side / 2 - this._ctx.lineWidth / 2;
       var endY = this._resizeConstraint.side / 2 - this._ctx.lineWidth / 2;
 
+
       // // Отрисовка  точками прямоугольника, обозначающего область изображения после
       // // кадрирования.
       //
@@ -215,29 +216,30 @@
             ctx.lineTo(startX + lineWidth * i, startY - lineHeigth/2);
           }
         }
-        // ctx.rotate((Math.PI/180)*270);
+        ctx.lineTo(endX, startY + lineHeigth/2);
         ctx.stroke();
         ctx.closePath();
       }
       function drawZigY(ctx, startX, startY, endX, lineWidth, lineHeigth) {
         ctx.beginPath();
-        ctx.moveTo(startX , startY + lineWidth/2);
+        ctx.moveTo(startX  , startY + lineWidth/2);
+        debugger;
         for (var i = 0; i < Math.round( endX * 2 / lineWidth); i++) {
           if (i % 2 === 0) {
-            ctx.lineTo(startX +  lineHeigth/2, startY + lineWidth  * i);
-          } else {
             ctx.lineTo(startX -  lineHeigth/2, startY + lineWidth  * i);
+          } else {
+            ctx.lineTo(startX +  lineHeigth/2, startY + lineWidth  * i);
           }
         }
+        ctx.lineTo(startX -  lineHeigth/2, endX);
         ctx.stroke();
         ctx.closePath();
       }
 
       drawZigX(this._ctx, startX, startY, endX, lineWidth, lineHeigth);
-      drawZigY(this._ctx, startX, startY, endX, lineWidth, lineHeigth);
-      drawZigX(this._ctx, startX, endY, endX, lineWidth, lineHeigth);
-      // this._ctx.rotate((Math.PI/180)*360);
-      drawZigY(this._ctx, endX, startY, endX, lineWidth, lineHeigth);
+      drawZigY(this._ctx, startX, startY, endX, lineWidth, -lineHeigth);
+      drawZigX(this._ctx, startX, endY, endX, lineWidth, -lineHeigth);
+      drawZigY(this._ctx, endX, startY , endX , lineWidth, lineHeigth);
 
 
 
