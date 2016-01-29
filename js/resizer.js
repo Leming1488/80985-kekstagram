@@ -183,7 +183,6 @@
       // }
       // // Рисуем точку
       // var drawArc = function(ctx, startX, startY, arcRadius) {
-      //   console.log(ctx);
       //   ctx.beginPath();
       //   ctx.arc(startX, startY, arcRadius, 0, Math.PI * 2, true);
       //   ctx.fill();
@@ -224,7 +223,6 @@
       function drawZigY(ctx, startX, startY, endX, lineWidth, lineHeigth) {
         ctx.beginPath();
         ctx.moveTo(startX, startY + lineWidth / 2);
-        debugger;
         for (var i = 0; i < Math.ceil(endX * 2 / lineWidth); i++) {
           if (i % 2 === 0) {
             ctx.lineTo(startX - lineHeigth / 2, startY + lineWidth * i);
