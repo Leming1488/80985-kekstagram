@@ -72,7 +72,16 @@
    * @return {boolean}
    */
   function resizeFormIsValid() {
-    return true;
+    var resizeX = resizeForm.elements.x.value;
+    var resizeY = resizeForm.elements.y.value;
+    var resizeSize = resizeForm.elements.size.value;
+    if (resizeX < 0 || resizeY < 0 ) {
+      return 1;
+    } else if (resizeX + resizeSize > currentResizer._image.naturalWidth || resizeY + resizeSize > currentResizer._image.naturalHeight ) {
+      return 2;
+    } else {
+      return 3;
+    }
   }
 
   /**
@@ -132,6 +141,33 @@
     uploadMessage.classList.add('invisible');
   }
 
+  function cordinateElem(elem) {
+    var box = elem.getBoundingClientRect();
+    return {
+      top: box.top + pageYOffset,
+      left: box.left + pageXOffset
+    };
+  }
+
+  /**
+  * Сообщение об ошибке, если данные невалидны.
+  * @type {HTMLElement}
+  */
+
+  var tooltip = document.querySelector('.upload-form-tooltip');
+
+  function uploadFormTooltip(text, event) {
+    var cord = cordinateElem(event);
+    tooltip.classList.add('visible');
+    tooltip.innerHTML = '<p>' + text + '</p>';
+    var height = tooltip.offsetHeight;
+    var width = tooltip.offsetWidth;
+    var evWidth = event.offsetWidth;
+    tooltip.style.top = cord.top - height - 10 + 'px';
+    tooltip.style.left = cord.left - (width - evWidth) / 2 + 'px';
+  }
+
+
   /**
    * Обработчик изменения изображения в форме загрузки. Если загруженный
    * файл является изображением, считывается исходник картинки, создается
@@ -186,6 +222,7 @@
     uploadForm.classList.remove('invisible');
   };
 
+
   /**
    * Обработка отправки формы кадрирования. Если форма валидна, экспортирует
    * кропнутое изображение в форму добавления фильтра и показывает ее.
@@ -193,12 +230,24 @@
    */
   resizeForm.onsubmit = function(evt) {
     evt.preventDefault();
-
-    if (resizeFormIsValid()) {
-      filterImage.src = currentResizer.exportImage().src;
-
-      resizeForm.classList.add('invisible');
-      filterForm.classList.remove('invisible');
+    var element = document.querySelector('.upload-form-controls');
+    var text;
+    switch (resizeFormIsValid()) {
+      case 1:
+        text = 'Поля «сверху» и «слева» не могут быть отрицательными';
+        uploadFormTooltip(text, element);
+        break;
+      case 2:
+        text = 'Сумма значений полей «слева» или «сверху» и «сторона» не должна быть больше ширины исходного изображения';
+        uploadFormTooltip(text, element);
+        break;
+      case 3:
+        tooltip.classList.remove('visible');
+        filterImage.src = currentResizer.exportImage().src;
+        resizeForm.classList.add('invisible');
+        filterForm.classList.remove('invisible');
+        resizeForm.submit();
+        break;
     }
   };
 
