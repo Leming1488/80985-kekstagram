@@ -330,6 +330,8 @@
         'sepia': 'filter-sepia'
       };
     }
+    var filterValue = docCookies.getItem('filter');
+    console.log(filterValue);
 
     var selectedFilter = [].filter.call(filterForm['upload-filter'], function(item) {
       return item.checked;
