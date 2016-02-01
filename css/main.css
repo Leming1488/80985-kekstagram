@@ -579,3 +579,29 @@ input[type=radio]:checked + .upload-filter-label {
 .likes-count-liked:before {
   background-position-x: -18px;
 }
+
+.upload-form-tooltip {
+  background-color: #fff;
+  color: red;
+  box-shadow: 7px 7px 5px 0px rgba(50, 50, 50, 0.75);
+  width: auto;
+  text-align: center;
+  position: absolute;
+  border-radius: 5px ;
+  padding: 5px;
+}
+
+.upload-form-tooltip:after {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -10px;
+  border: 10px solid transparent;
+  border-top: 10px solid #fff;
+}
+
+.upload-form-tooltip p {
+  max-width: 300px;
+}

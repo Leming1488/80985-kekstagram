@@ -72,7 +72,16 @@
    * @return {boolean}
    */
   function resizeFormIsValid() {
-    return true;
+    var resizeX = resizeForm.elements.x.value;
+    var resizeY = resizeForm.elements.y.value;
+    var resizeSize = resizeForm.elements.size.value;
+    if (resizeX < 0 || resizeY < 0 ) {
+      return 1;
+    } else if (resizeX + resizeSize > currentResizer._image.naturalWidth || resizeY + resizeSize > currentResizer._image.naturalHeight ) {
+      return 2;
+    } else {
+      return 3;
+    }
   }
 
   /**
@@ -132,6 +141,33 @@
     uploadMessage.classList.add('invisible');
   }
 
+  function cordinateElem(elem) {
+    var box = elem.getBoundingClientRect();
+    return {
+      top: box.top + pageYOffset,
+      left: box.left + pageXOffset
+    };
+  }
+
+  /**
+  * Сообщение об ошибке, если данные невалидны.
+  * @type {HTMLElement}
+  */
+
+  var tooltip = document.querySelector('.upload-form-tooltip');
+
+  function uploadFormTooltip(text, event) {
+    var cord = cordinateElem(event);
+    tooltip.classList.remove('invisible');
+    tooltip.innerHTML = '<p>' + text + '</p>';
+    var height = tooltip.offsetHeight;
+    var width = tooltip.offsetWidth;
+    var evWidth = event.offsetWidth;
+    tooltip.style.top = cord.top - height - 10 + 'px';
+    tooltip.style.left = cord.left - (width - evWidth) / 2 + 'px';
+  }
+
+
   /**
    * Обработчик изменения изображения в форме загрузки. Если загруженный
    * файл является изображением, считывается исходник картинки, создается
@@ -182,9 +218,37 @@
     cleanupResizer();
     updateBackground();
 
+    tooltip.classList.add('invisible');
+
     resizeForm.classList.add('invisible');
     uploadForm.classList.remove('invisible');
   };
+
+  /**
+   * Обработка валидации формы кадрирования.
+   * @param {Event} evt
+   */
+  resizeForm.onchange = function(evt) {
+    var element = evt.target;
+    var text;
+    switch (resizeFormIsValid()) {
+      case 1:
+        text = 'Поля «сверху» и «слева» не могут быть отрицательными';
+        uploadFormTooltip(text, element);
+        resizeForm.fwd.setAttribute('disabled', true);
+        break;
+      case 2:
+        text = 'Сумма значений полей «слева» или «сверху» и «сторона» не должна быть больше ширины исходного изображения';
+        uploadFormTooltip(text, element);
+        resizeForm.fwd.setAttribute('disabled', true);
+        break;
+      case 3:
+        tooltip.classList.add('invisible')
+        resizeForm.fwd.removeAttribute('disabled');
+        break;
+    }
+  };
+
 
   /**
    * Обработка отправки формы кадрирования. Если форма валидна, экспортирует
@@ -193,13 +257,9 @@
    */
   resizeForm.onsubmit = function(evt) {
     evt.preventDefault();
-
-    if (resizeFormIsValid()) {
-      filterImage.src = currentResizer.exportImage().src;
-
-      resizeForm.classList.add('invisible');
-      filterForm.classList.remove('invisible');
-    }
+    filterImage.src = currentResizer.exportImage().src;
+    resizeForm.classList.add('invisible');
+    filterForm.classList.remove('invisible');
   };
 
   /**
@@ -226,6 +286,7 @@
 
     filterForm.classList.add('invisible');
     uploadForm.classList.remove('invisible');
+    filterForm.submit();
   };
 
   /**
