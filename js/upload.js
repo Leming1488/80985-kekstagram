@@ -224,6 +224,31 @@
     uploadForm.classList.remove('invisible');
   };
 
+  /**
+   * Обработка валидации формы кадрирования.
+   * @param {Event} evt
+   */
+  resizeForm.onchange = function(evt) {
+    var element = evt.target;
+    var text;
+    switch (resizeFormIsValid()) {
+      case 1:
+        text = 'Поля «сверху» и «слева» не могут быть отрицательными';
+        uploadFormTooltip(text, element);
+        resizeForm.fwd.setAttribute('disabled', true);
+        break;
+      case 2:
+        text = 'Сумма значений полей «слева» или «сверху» и «сторона» не должна быть больше ширины исходного изображения';
+        uploadFormTooltip(text, element);
+        resizeForm.fwd.setAttribute('disabled', true);
+        break;
+      case 3:
+        tooltip.classList.add('invisible')
+        resizeForm.fwd.removeAttribute('disabled');
+        break;
+    }
+  };
+
 
   /**
    * Обработка отправки формы кадрирования. Если форма валидна, экспортирует
@@ -232,24 +257,9 @@
    */
   resizeForm.onsubmit = function(evt) {
     evt.preventDefault();
-    var element = document.querySelector('.upload-form-controls');
-    var text;
-    switch (resizeFormIsValid()) {
-      case 1:
-        text = 'Поля «сверху» и «слева» не могут быть отрицательными';
-        uploadFormTooltip(text, element);
-        break;
-      case 2:
-        text = 'Сумма значений полей «слева» или «сверху» и «сторона» не должна быть больше ширины исходного изображения';
-        uploadFormTooltip(text, element);
-        break;
-      case 3:
-        tooltip.classList.add('invisible');
-        filterImage.src = currentResizer.exportImage().src;
-        resizeForm.classList.add('invisible');
-        filterForm.classList.remove('invisible');
-        break;
-    }
+    filterImage.src = currentResizer.exportImage().src;
+    resizeForm.classList.add('invisible');
+    filterForm.classList.remove('invisible');
   };
 
   /**
@@ -276,6 +286,7 @@
 
     filterForm.classList.add('invisible');
     uploadForm.classList.remove('invisible');
+    filterForm.submit();
   };
 
   /**
