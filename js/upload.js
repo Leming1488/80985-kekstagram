@@ -218,6 +218,8 @@
     cleanupResizer();
     updateBackground();
 
+    tooltip.classList.add('invisible');
+
     resizeForm.classList.add('invisible');
     uploadForm.classList.remove('invisible');
   };
