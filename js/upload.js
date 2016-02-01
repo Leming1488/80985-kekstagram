@@ -276,6 +276,30 @@
 
     filterForm.classList.add('invisible');
     uploadForm.classList.remove('invisible');
+    var filters = filterForm['upload-filter'];
+    for (var i = 0; i < filters.length; i++) {
+      var filter = filters[i];
+      if(filter.checked) {
+        break;
+      }
+    }
+    var today =  new Date();
+    var todayYear = today.getFullYear();
+    var myMonth = 4;
+    var myDate = 21;
+    var myBithday = new Date(todayYear, myMonth, myDate);
+    var todayDate = today.getDate();
+    var todayMonth = today.getMonth();
+    if(todayMonth > myMonth || (todayMonth === myMonth && todayDate > myDate ) ) {
+      myBithday.setFullYear(todayYear - 1);
+    } else {
+      today
+    }
+
+    console.log(total);
+    document.cookie = 'filter=' + filter;
+    // var filter = filterImage.className.split(' ');
+    // document.cookie = filter[1];
   };
 
   /**
