@@ -149,10 +149,10 @@
       this._ctx.fill('evenodd');
 
       // Начальные и конечные координаты для рамки.
-      var startX = (-this._resizeConstraint.side / 2) - this._ctx.lineWidth / 2;
-      var startY = (-this._resizeConstraint.side / 2) - this._ctx.lineWidth / 2;
-      var endX = this._resizeConstraint.side / 2 - this._ctx.lineWidth / 2;
-      var endY = this._resizeConstraint.side / 2 - this._ctx.lineWidth / 2;
+      var frameStartX = (-this._resizeConstraint.side / 2) - this._ctx.lineWidth / 2;
+      var frameStartY = (-this._resizeConstraint.side / 2) - this._ctx.lineWidth / 2;
+      var frameEndX = this._resizeConstraint.side / 2 - this._ctx.lineWidth / 2;
+      var frameEndY = this._resizeConstraint.side / 2 - this._ctx.lineWidth / 2;
 
 
       // // Отрисовка  точками прямоугольника, обозначающего область изображения после
@@ -164,27 +164,27 @@
       // var arcStep = 10;
       //
       // // Рисуем линию из точек по X
-      // function drawBorderX(ctx, startX, startY, endX) {
-      //   drawArc(ctx, startX, startY, arcRadius);
-      //   if (startX  < endX  ) {
-      //     return drawBorderX(ctx, startX + arcStep, startY, endX);
+      // function drawBorderX(ctx, frameStartX, frameStartY, frameEndX) {
+      //   drawArc(ctx, frameStartX, frameStartY, arcRadius);
+      //   if (frameStartX  < frameEndX  ) {
+      //     return drawBorderX(ctx, frameStartX + arcStep, frameStartY, frameEndX);
       //   } else {
       //     return;
       //   }
       // }
       // // Рисуем линию из точек по Y
-      // function drawBorderY(ctx, startX, startY, endY) {
-      //   drawArc(ctx, startX, startY, arcRadius);
-      //   if (startY  < endY ) {
-      //     return drawBorderY(ctx, startX, startY + arcStep, endY);
+      // function drawBorderY(ctx, frameStartX, frameStartY, frameEndY) {
+      //   drawArc(ctx, frameStartX, frameStartY, arcRadius);
+      //   if (frameStartY  < frameEndY ) {
+      //     return drawBorderY(ctx, frameStartX, frameStartY + arcStep, frameEndY);
       //   } else {
       //     return;
       //   }
       // }
       // // Рисуем точку
-      // var drawArc = function(ctx, startX, startY, arcRadius) {
+      // var drawArc = function(ctx, frameStartX, frameStartY, arcRadius) {
       //   ctx.beginPath();
-      //   ctx.arc(startX, startY, arcRadius, 0, Math.PI * 2, true);
+      //   ctx.arc(frameStartX, frameStartY, arcRadius, 0, Math.PI * 2, true);
       //   ctx.fill();
       //   ctx.closePath();
       // };
@@ -192,53 +192,53 @@
       // // Цвет заливки рамки с точками
       // this._ctx.fillStyle = '#ffe753';
       // // Рисуем рамку.
-      // drawBorderX(this._ctx, startX, startY, endX);
-      // drawBorderX(this._ctx, startX, endY, endX);
-      // drawBorderY(this._ctx, startX, startY, endY);
-      // drawBorderY(this._ctx, endX, startY, endY);
+      // drawBorderX(this._ctx, frameStartX, frameStartY, frameEndX);
+      // drawBorderX(this._ctx, frameStartX, frameEndY, frameEndX);
+      // drawBorderY(this._ctx, frameStartX, frameStartY, frameEndY);
+      // drawBorderY(this._ctx, frameEndX, frameStartY, frameEndY);
 
       // Отрисовка  зигзагами прямоугольника, обозначающего область изображения после
       // кадрирования.
 
       // Рисуем линию зигзагов по X
-      var lineWidth = 12;
-      var lineHeigth = 10;
+      var lineWidthZig = 12;
+      var lineHeigthZig = 10;
 
       // Рисуем линию из зигзагов по Х
-      function drawZigX(ctx, startX, startY, endX, lineWidth, lineHeigth) {
+      function drawZigX(ctx, frameStartX, frameStartY, frameEndX, lineWidthZig, lineHeigthZig) {
         ctx.beginPath();
-        ctx.moveTo(startX + lineWidth / 2, startY);
-        for (var i = 0; i < Math.ceil(endX * 2 / lineWidth); i++) {
+        ctx.moveTo(frameStartX + lineWidthZig / 2, frameStartY);
+        for (var i = 0; i < Math.ceil(frameEndX * 2 / lineWidthZig); i++) {
           if (i % 2 === 0) {
-            ctx.lineTo(startX + lineWidth * i, startY + lineHeigth / 2);
+            ctx.lineTo(frameStartX + lineWidthZig * i, frameStartY + lineHeigthZig / 2);
           } else {
-            ctx.lineTo(startX + lineWidth * i, startY - lineHeigth / 2);
+            ctx.lineTo(frameStartX + lineWidthZig * i, frameStartY - lineHeigthZig / 2);
           }
         }
-        ctx.lineTo(startX + lineWidth * i, startY + lineHeigth / 2);
+        ctx.lineTo(frameStartX + lineWidthZig * i, frameStartY + lineHeigthZig / 2);
         ctx.stroke();
         ctx.closePath();
       }
       // Рисуем линию из зигзагов по Y
-      function drawZigY(ctx, startX, startY, endX, lineWidth, lineHeigth) {
+      function drawZigY(ctx, frameStartX, frameStartY, frameEndX, lineWidthZig, lineHeigthZig) {
         ctx.beginPath();
-        ctx.moveTo(startX, startY + lineWidth / 2);
-        for (var i = 0; i < Math.ceil(endX * 2 / lineWidth); i++) {
+        ctx.moveTo(frameStartX, frameStartY + lineWidthZig / 2);
+        for (var i = 0; i < Math.ceil(frameEndX * 2 / lineWidthZig); i++) {
           if (i % 2 === 0) {
-            ctx.lineTo(startX - lineHeigth / 2, startY + lineWidth * i);
+            ctx.lineTo(frameStartX - lineHeigthZig / 2, frameStartY + lineWidthZig * i);
           } else {
-            ctx.lineTo(startX + lineHeigth / 2, startY + lineWidth * i);
+            ctx.lineTo(frameStartX + lineHeigthZig / 2, frameStartY + lineWidthZig * i);
           }
         }
-        ctx.lineTo(startX - lineHeigth / 2, startY + lineWidth * i);
+        ctx.lineTo(frameStartX - lineHeigthZig / 2, frameStartY + lineWidthZig * i);
         ctx.stroke();
         ctx.closePath();
       }
       // Рисуем рамку из зигзагов
-      drawZigX(this._ctx, startX, startY, endX, lineWidth, lineHeigth);
-      drawZigY(this._ctx, startX, startY, endX, lineWidth, -lineHeigth);
-      drawZigX(this._ctx, startX, endY, endX, lineWidth, -lineHeigth);
-      drawZigY(this._ctx, endX, startY, endX, lineWidth, lineHeigth);
+      drawZigX(this._ctx, frameStartX, frameStartY, frameEndX, lineWidthZig, lineHeigthZig);
+      drawZigY(this._ctx, frameStartX, frameStartY, frameEndX, lineWidthZig, -lineHeigthZig);
+      drawZigX(this._ctx, frameStartX, frameEndY, frameEndX, lineWidthZig, -lineHeigthZig);
+      drawZigY(this._ctx, frameEndX, frameStartY, frameEndX, lineWidthZig, lineHeigthZig);
 
       // Отрисовка прямоугольника, обозначающего область изображения после
       // кадрирования. Координаты задаются от центра.

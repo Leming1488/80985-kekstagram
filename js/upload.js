@@ -158,7 +158,7 @@
 
   function uploadFormTooltip(text, event) {
     var cord = cordinateElem(event);
-    tooltip.classList.add('visible');
+    tooltip.classList.remove('invisible');
     tooltip.innerHTML = '<p>' + text + '</p>';
     var height = tooltip.offsetHeight;
     var width = tooltip.offsetWidth;
@@ -242,11 +242,10 @@
         uploadFormTooltip(text, element);
         break;
       case 3:
-        tooltip.classList.remove('visible');
+        tooltip.classList.add('invisible');
         filterImage.src = currentResizer.exportImage().src;
         resizeForm.classList.add('invisible');
         filterForm.classList.remove('invisible');
-        resizeForm.submit();
         break;
     }
   };
