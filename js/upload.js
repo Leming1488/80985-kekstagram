@@ -276,30 +276,43 @@
 
     filterForm.classList.add('invisible');
     uploadForm.classList.remove('invisible');
+
     var filters = filterForm['upload-filter'];
     for (var i = 0; i < filters.length; i++) {
       var filter = filters[i];
-      if(filter.checked) {
+      if (filter.checked) {
         break;
       }
     }
-    var today =  new Date();
-    var todayYear = today.getFullYear();
-    var myMonth = 4;
-    var myDate = 21;
-    var myBithday = new Date(todayYear, myMonth, myDate);
-    var todayDate = today.getDate();
-    var todayMonth = today.getMonth();
-    if(todayMonth > myMonth || (todayMonth === myMonth && todayDate > myDate ) ) {
-      myBithday.setFullYear(todayYear - 1);
-    } else {
-      today
-    }
 
-    console.log(total);
-    document.cookie = 'filter=' + filter;
-    // var filter = filterImage.className.split(' ');
-    // document.cookie = filter[1];
+    var expiresDate = function() {
+
+      function diffDate(myBithday) {
+        var total = Math.round( (today - myBithday) / (1000 * 60 * 60 * 24) );
+        today.setDate(todayDate + total);
+        return today.toUTCString();
+      }
+
+      var today = new Date();
+      var todayYear = today.getFullYear();
+      var myMonth = 4;
+      var myDate = 21;
+      var myBithday = new Date(todayYear, myMonth, myDate);
+      var todayDate = today.getDate();
+      var todayMonth = today.getMonth();
+
+      if (todayMonth > myMonth || (todayMonth === myMonth && todayDate > myDate ) ) {
+        return diffDate(myBithday);
+      } else {
+        myBithday.setFullYear(todayYear - 1);
+        return diffDate(myBithday);
+      }
+    };
+
+    document.cookie = 'filter=' + filter.value + ';expires=' + expiresDate();
+
+    filterForm.submit();
+
   };
 
   /**
