@@ -314,8 +314,6 @@
 
     filterForm.classList.add('invisible');
     uploadForm.classList.remove('invisible');
-<<<<<<< HEAD
-
     /**
      * Получаем значения выбранного фильтра.
      *
@@ -362,8 +360,6 @@
      */
     document.cookie = 'filter=' + filter.value + ';expires=' + expiresDate();
 
-=======
->>>>>>> module3-task1
     filterForm.submit();
   };
 

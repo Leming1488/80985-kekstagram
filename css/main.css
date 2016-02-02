@@ -604,4 +604,6 @@ input[type=radio]:checked + .upload-filter-label {
 
 .upload-form-tooltip p {
   max-width: 300px;
+  margin: 0;
+  font-size: 12px;
 }
