@@ -224,15 +224,12 @@
     uploadForm.classList.remove('invisible');
   };
 
-
   /**
-   * Обработка отправки формы кадрирования. Если форма валидна, экспортирует
-   * кропнутое изображение в форму добавления фильтра и показывает ее.
+   * Обработка валидации формы кадрирования.
    * @param {Event} evt
    */
-  resizeForm.onsubmit = function(evt) {
-    evt.preventDefault();
-    var element = document.querySelector('.upload-form-controls');
+  resizeForm.onchange = function(evt) {
+    var element = evt.target;
     var text;
 
     /**
@@ -266,18 +263,31 @@
       case 1:
         text = 'Поля «сверху» и «слева» не могут быть отрицательными';
         uploadFormTooltip(text, element);
+        resizeForm.fwd.setAttribute('disabled', true);
         break;
       case 2:
         text = 'Сумма значений полей «слева» или «сверху» и «сторона» не должна быть больше ширины исходного изображения';
         uploadFormTooltip(text, element);
+        resizeForm.fwd.setAttribute('disabled', true);
         break;
       case 3:
-        tooltip.classList.add('invisible');
-        filterImage.src = currentResizer.exportImage().src;
-        resizeForm.classList.add('invisible');
-        filterForm.classList.remove('invisible');
+        tooltip.classList.add('invisible')
+        resizeForm.fwd.removeAttribute('disabled');
         break;
     }
+  };
+
+
+  /**
+   * Обработка отправки формы кадрирования. Если форма валидна, экспортирует
+   * кропнутое изображение в форму добавления фильтра и показывает ее.
+   * @param {Event} evt
+   */
+  resizeForm.onsubmit = function(evt) {
+    evt.preventDefault();
+    filterImage.src = currentResizer.exportImage().src;
+    resizeForm.classList.add('invisible');
+    filterForm.classList.remove('invisible');
   };
 
   /**
@@ -304,6 +314,7 @@
 
     filterForm.classList.add('invisible');
     uploadForm.classList.remove('invisible');
+<<<<<<< HEAD
 
     /**
      * Получаем значения выбранного фильтра.
@@ -351,6 +362,8 @@
      */
     document.cookie = 'filter=' + filter.value + ';expires=' + expiresDate();
 
+=======
+>>>>>>> module3-task1
     filterForm.submit();
   };
 
