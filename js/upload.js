@@ -234,6 +234,34 @@
     evt.preventDefault();
     var element = document.querySelector('.upload-form-controls');
     var text;
+
+    /**
+     * Проверяет, действительно ли существует cookie с переданным названием.
+     * @return {boolean}
+     */
+    if(docCookies.hasItem('filter')) {
+      var filterCookies = docCookies.getItem('filter');
+      var filters = filterForm['upload-filter'];
+      var filterMap = {
+        'none': 'filter-none',
+        'chrome': 'filter-chrome',
+        'sepia': 'filter-sepia'
+      };
+
+      /**
+       * Устанавливаем  фильтр по умолчанию.
+       *
+       */
+      for (var i = 0; i < filters.length; i++) {
+        var filterValue = filters[i];
+        if (filterValue.value === filterCookies) {
+          filterValue.setAttribute('checked', true);
+          filterImage.className = 'filter-image-preview ' + filterMap[filterCookies];
+          break;
+        }
+      }
+    }
+
     switch (resizeFormIsValid()) {
       case 1:
         text = 'Поля «сверху» и «слева» не могут быть отрицательными';
@@ -277,6 +305,11 @@
     filterForm.classList.add('invisible');
     uploadForm.classList.remove('invisible');
 
+    /**
+     * Получаем значения выбранного фильтра.
+     *
+     *
+     */
     var filters = filterForm['upload-filter'];
     for (var i = 0; i < filters.length; i++) {
       var filter = filters[i];
@@ -285,14 +318,17 @@
       }
     }
 
+    /**
+     * Функция получения количество дней, прошедшее с  ближайшего дня рождения.
+     *
+     *
+     */
     var expiresDate = function() {
-
       function diffDate(myBithday) {
         var total = Math.round( (today - myBithday) / (1000 * 60 * 60 * 24) );
         today.setDate(todayDate + total);
         return today.toUTCString();
       }
-
       var today = new Date();
       var todayYear = today.getFullYear();
       var myMonth = 4;
@@ -300,7 +336,6 @@
       var myBithday = new Date(todayYear, myMonth, myDate);
       var todayDate = today.getDate();
       var todayMonth = today.getMonth();
-
       if (todayMonth > myMonth || (todayMonth === myMonth && todayDate > myDate ) ) {
         return diffDate(myBithday);
       } else {
@@ -309,10 +344,14 @@
       }
     };
 
+    /**
+     * Сохраняем в cookies последний выбранный фильтр и
+     * устанавливаем срок жизни cookie.
+     *
+     */
     document.cookie = 'filter=' + filter.value + ';expires=' + expiresDate();
 
     filterForm.submit();
-
   };
 
   /**
@@ -330,8 +369,7 @@
         'sepia': 'filter-sepia'
       };
     }
-    var filterValue = docCookies.getItem('filter');
-    console.log(filterValue);
+
 
     var selectedFilter = [].filter.call(filterForm['upload-filter'], function(item) {
       return item.checked;
