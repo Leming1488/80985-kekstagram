@@ -20,20 +20,20 @@
     if ('content' in template) {
       var element = template.content.children[0].cloneNode(true);
     } else {
-      var element = template.childNodes[0].cloneNode(true);
+      element = template.childNodes[0].cloneNode(true);
     }
 
-    var pictureNew = new Image(182,182);
+    var pictureNew = new Image(182, 182);
     pictureNew.title = data.date;
     var pictureOld = element.querySelector('.picture img');
-    
+
     pictureNew.onload = function() {
       element.replaceChild(pictureNew, pictureOld);
-    }
-    pictureNew.onerror = function(e) {
+    };
+    pictureNew.onerror = function() {
       element.replaceChild(pictureNew, pictureOld);
       pictureNew.parentElement.classList.add('picture-load-failure');
-    }
+    };
 
     pictureNew.src = data.url;
     element.querySelector('.picture-comments').textContent = data.comments;
