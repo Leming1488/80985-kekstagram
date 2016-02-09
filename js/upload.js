@@ -236,10 +236,10 @@
      * Проверяет, действительно ли существует cookie с переданным названием.
      * @return {boolean}
      */
-    if(docCookies.hasItem('filter')) {
+    if (docCookies.hasItem('filter')) {
       var filterCookies = docCookies.getItem('filter');
       var filters = filterForm['upload-filter'];
-      var filterMap = {
+      filterMap = {
         'none': 'filter-none',
         'chrome': 'filter-chrome',
         'sepia': 'filter-sepia'
@@ -271,7 +271,7 @@
         resizeForm.fwd.setAttribute('disabled', true);
         break;
       case 3:
-        tooltip.classList.add('invisible')
+        tooltip.classList.add('invisible');
         resizeForm.fwd.removeAttribute('disabled');
         break;
     }
