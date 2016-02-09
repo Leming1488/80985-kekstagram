@@ -205,32 +205,32 @@
       var lineHeigthZig = 10;
 
       // Рисуем линию из зигзагов по Х
-      function drawZigX(ctx, frameStartX, frameStartY, frameEndX, lineWidthZig, lineHeigthZig) {
+      function drawZigX(ctx, startX, startY, endX, widthZig, heigthZig) {
         ctx.beginPath();
-        ctx.moveTo(frameStartX + lineWidthZig / 2, frameStartY);
-        for (var i = 0; i < Math.ceil(frameEndX * 2 / lineWidthZig); i++) {
+        ctx.moveTo(startX + widthZig / 2, startY);
+        for (var i = 0; i < Math.ceil(endX * 2 / widthZig); i++) {
           if (i % 2 === 0) {
-            ctx.lineTo(frameStartX + lineWidthZig * i, frameStartY + lineHeigthZig / 2);
+            ctx.lineTo(startX + widthZig * i, startY + heigthZig / 2);
           } else {
-            ctx.lineTo(frameStartX + lineWidthZig * i, frameStartY - lineHeigthZig / 2);
+            ctx.lineTo(startX + widthZig * i, startY - heigthZig / 2);
           }
         }
-        ctx.lineTo(frameStartX + lineWidthZig * i, frameStartY + lineHeigthZig / 2);
+        ctx.lineTo(startX + widthZig * i, startY + heigthZig / 2);
         ctx.stroke();
         ctx.closePath();
       }
       // Рисуем линию из зигзагов по Y
-      function drawZigY(ctx, frameStartX, frameStartY, frameEndX, lineWidthZig, lineHeigthZig) {
+      function drawZigY(ctx, startX, startY, endX, widthZig, heigthZig) {
         ctx.beginPath();
-        ctx.moveTo(frameStartX, frameStartY + lineWidthZig / 2);
-        for (var i = 0; i < Math.ceil(frameEndX * 2 / lineWidthZig); i++) {
+        ctx.moveTo(startX, startY + widthZig / 2);
+        for (var i = 0; i < Math.ceil(endX * 2 / widthZig); i++) {
           if (i % 2 === 0) {
-            ctx.lineTo(frameStartX - lineHeigthZig / 2, frameStartY + lineWidthZig * i);
+            ctx.lineTo(startX - heigthZig / 2, startY + widthZig * i);
           } else {
-            ctx.lineTo(frameStartX + lineHeigthZig / 2, frameStartY + lineWidthZig * i);
+            ctx.lineTo(startX + heigthZig / 2, startY + widthZig * i);
           }
         }
-        ctx.lineTo(frameStartX - lineHeigthZig / 2, frameStartY + lineWidthZig * i);
+        ctx.lineTo(startX - heigthZig / 2, startY + widthZig * i);
         ctx.stroke();
         ctx.closePath();
       }
