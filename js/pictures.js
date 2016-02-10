@@ -76,8 +76,8 @@
   }
 
   //Заполняем шаблон данными из полученного массива
-  function renderPhoto(pictures) {
-    pictures.forEach(function(elem) {
+  function renderPhoto(photo) {
+    photo.forEach(function(elem) {
       var element = createTemplate(elem);
       container.appendChild(element);
     });
