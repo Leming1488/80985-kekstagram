@@ -19,7 +19,7 @@
     var data = e.target.response;
     pictures = JSON.parse(data);
     renderPhoto(pictures);
-    container.classList.remove('pictures-loading')
+    container.classList.remove('pictures-loading');
     sortFilterForm.onchange = function() {
       container.innerHTML = '';
       var elems = sortFilterForm.elements.filter;
@@ -59,27 +59,26 @@
         var today = new Date();
         var todaySet = today.setDate(today.getDate() - 12);
         filteredImg = filteredImg.sort(function(a, b) {
-          return (today - Date.parse(a.date)) - (today - Date.parse(b.date))
+          return (today - Date.parse(a.date)) - (today - Date.parse(b.date));
         });
-        filteredImg = filteredImg.filter(function(el, index, array) {
+        filteredImg = filteredImg.filter(function(el) {
           return Date.parse(el.date) > todaySet;
-        })
+        });
         renderPhoto(filteredImg);
         break;
       case 'discussed':
         filteredImg = filteredImg.sort(function(a, b) {
-          return b.comments - a.comments
+          return b.comments - a.comments;
         });
         renderPhoto(filteredImg);
         break;
     }
-
   }
 
   //Заполняем шаблон данными из полученного массива
   function renderPhoto(pictures) {
-    pictures.forEach(function(picture) {
-      var element = createTemplate(picture);
+    pictures.forEach(function(elem) {
+      var element = createTemplate(elem);
       container.appendChild(element);
     });
   }
