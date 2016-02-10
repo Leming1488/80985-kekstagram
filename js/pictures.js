@@ -4,14 +4,15 @@
   var pictures = [];
   var xhr = new XMLHttpRequest();
   var container = document.querySelector('.pictures');
+
   /**
    * Форма сортировки изображения.
    * @type {HTMLFormElement}
    */
   var sortFilterForm = document.forms['filter-sort'];
 
+  //Создаем запрос для получения массива с картинками
   xhr.open('GET', 'http://o0.github.io/assets/json/pictures.json');
-
   xhr.timeout = 30000;
 
   xhr.onload = function(e) {
@@ -22,39 +23,12 @@
     sortFilterForm.onchange = function() {
       container.innerHTML = '';
       var elems = sortFilterForm.elements.filter;
-      for(var i = 0; i < elems.length; i++) {
+      for (var i = 0; i < elems.length; i++) {
         if (elems[i].checked) {
-            var filterSort = elems[i].value;
+          var filterSort = elems[i].value;
         }
       }
-        var filteredImg = pictures.slice(0);
-
-        switch (filterSort) {
-          
-          case 'popular':
-          renderPhoto(filteredImg);
-            break;
-
-          case 'new':
-          var today =  new Date();
-          var todaySet = today.setDate(today.getDate() - 12 );
-          debugger;
-          filteredImg = filteredImg.sort(function(a, b) {
-            return  (today  - Date.parse(a.date)) - ( today - Date.parse(b.date))
-          });
-          filteredImg = filteredImg.filter(function(el, index, array) {
-            return  Date.parse(el.date) > todaySet;
-          })
-          renderPhoto(filteredImg);
-            break;
-
-          case 'discussed':
-          filteredImg = filteredImg.sort(function(a, b) {
-            return b.comments - a.comments
-          });
-          renderPhoto(filteredImg);
-            break;
-        }
+      filterPhoto(filterSort);
     };
   };
 
@@ -72,14 +46,39 @@
 
   xhr.send();
 
-
-
   document.querySelector('.filters').classList.add('hidden');
 
+  //Сортируем массив с картинками по фильтрам
+  function filterPhoto(filterSort) {
+    var filteredImg = pictures.slice(0);
+    switch (filterSort) {
+      case 'popular':
+        renderPhoto(filteredImg);
+        break;
+      case 'new':
+        var today = new Date();
+        var todaySet = today.setDate(today.getDate() - 12);
+        filteredImg = filteredImg.sort(function(a, b) {
+          return (today - Date.parse(a.date)) - (today - Date.parse(b.date))
+        });
+        filteredImg = filteredImg.filter(function(el, index, array) {
+          return Date.parse(el.date) > todaySet;
+        })
+        renderPhoto(filteredImg);
+        break;
+      case 'discussed':
+        filteredImg = filteredImg.sort(function(a, b) {
+          return b.comments - a.comments
+        });
+        renderPhoto(filteredImg);
+        break;
+    }
 
+  }
+
+  //Заполняем шаблон данными из полученного массива
   function renderPhoto(pictures) {
     pictures.forEach(function(picture) {
-      //Заполняем шаблон данными из полученного массива
       var element = createTemplate(picture);
       container.appendChild(element);
     });
