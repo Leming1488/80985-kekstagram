@@ -390,6 +390,7 @@
     filterImage.className = 'filter-image-preview ' + filterMap[selectedFilter];
   };
 
+
   cleanupResizer();
   updateBackground();
 })();

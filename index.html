@@ -9,7 +9,7 @@
 </head>
 <body>
 
-<form class="filters hidden" action="index.html" method="get">
+<form class="filters hidden" id="filter-sort" action="index.html" method="get">
   <input type="radio" id="filter-popular" class="filters-radio" name="filter" value="popular" checked>
   <label for="filter-popular" class="filters-item">Популярные</label>
 
@@ -90,13 +90,6 @@
   </a>
 </template>
 
-<script type="text/javascript">
-  var pictures = [];
-  function __picturesLoadCallback(data) {
-    pictures = data;
-  }
-</script>
-<script type="text/javascript" src="https://up.htmlacademy.ru/assets/js_intensive/jsonp/pictures.js"></script>
 <script type="text/javascript" src="js/pictures.js"></script>
 <script type="text/javascript" src="js/resizer.js"></script>
 <script type="text/javascript" src="js/upload.js"></script>
