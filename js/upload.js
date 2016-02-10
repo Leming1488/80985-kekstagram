@@ -85,12 +85,6 @@
   }
 
   /**
-   * Форма сортировки изображения.
-   * @type {HTMLFormElement}
-   */
-  var sortFilterForm = document.forms['filter-sort'];
-
-  /**
    * Форма загрузки изображения.
    * @type {HTMLFormElement}
    */
@@ -396,23 +390,6 @@
     filterImage.className = 'filter-image-preview ' + filterMap[selectedFilter];
   };
 
-  sortFilterForm.onchange = function() {
-    var elems = sortFilterForm.elements.filter;
-    elems.forEach(function(item, i) {
-      var filterSort = item.value;
-      switch (filterSort) {
-        case popular:
-          break;
-        case new:
-          break;
-        case discussed:
-          break;
-        default:
-
-      }
-    });
-
-  }
 
   cleanupResizer();
   updateBackground();

@@ -3,7 +3,12 @@
 (function() {
   var pictures = [];
   var xhr = new XMLHttpRequest();
-    var container = document.querySelector('.pictures');
+  var container = document.querySelector('.pictures');
+  /**
+   * Форма сортировки изображения.
+   * @type {HTMLFormElement}
+   */
+  var sortFilterForm = document.forms['filter-sort'];
 
   xhr.open('GET', 'http://o0.github.io/assets/json/pictures.json');
 
@@ -14,6 +19,43 @@
     pictures = JSON.parse(data);
     renderPhoto(pictures);
     container.classList.remove('pictures-loading')
+    sortFilterForm.onchange = function() {
+      container.innerHTML = '';
+      var elems = sortFilterForm.elements.filter;
+      for(var i = 0; i < elems.length; i++) {
+        if (elems[i].checked) {
+            var filterSort = elems[i].value;
+        }
+      }
+        var filteredImg = pictures.slice(0);
+
+        switch (filterSort) {
+          
+          case 'popular':
+          renderPhoto(filteredImg);
+            break;
+
+          case 'new':
+          var today =  new Date();
+          var todaySet = today.setDate(today.getDate() - 12 );
+          debugger;
+          filteredImg = filteredImg.sort(function(a, b) {
+            return  (today  - Date.parse(a.date)) - ( today - Date.parse(b.date))
+          });
+          filteredImg = filteredImg.filter(function(el, index, array) {
+            return  Date.parse(el.date) > todaySet;
+          })
+          renderPhoto(filteredImg);
+            break;
+
+          case 'discussed':
+          filteredImg = filteredImg.sort(function(a, b) {
+            return b.comments - a.comments
+          });
+          renderPhoto(filteredImg);
+            break;
+        }
+    };
   };
 
   xhr.onprogress = function() {
@@ -75,5 +117,8 @@
   }
 
   document.querySelector('.filters').classList.remove('hidden');
+
+
+
 
 })();
