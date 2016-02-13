@@ -2,6 +2,8 @@
 
 (function() {
   var pictures = [];
+  var currentPage = 0;
+  var PAGE_SIZE = 12;
   var xhr = new XMLHttpRequest();
   var container = document.querySelector('.pictures');
 
@@ -11,6 +13,7 @@
    */
   var sortFilterForm = document.forms['filter-sort'];
 
+
   //Создаем запрос для получения массива с картинками
   xhr.open('GET', 'http://o0.github.io/assets/json/pictures.json');
   xhr.timeout = 30000;
@@ -18,7 +21,7 @@
   xhr.onload = function(e) {
     var data = e.target.response;
     pictures = JSON.parse(data);
-    renderPhoto(pictures);
+    renderPhoto(pictures, currentPage);
     container.classList.remove('pictures-loading');
     sortFilterForm.onchange = function() {
       container.innerHTML = '';
@@ -48,12 +51,19 @@
 
   document.querySelector('.filters').classList.add('hidden');
 
+  window.addEventListener('scroll', function() {
+  var bodyPos = document.body.getBoundingClientRect();
+    if (bodyPos.bottom === window.pageYOffset) {
+      alert('hello');
+    }
+  });
+
   //Сортируем массив с картинками по фильтрам
   function filterPhoto(filterSort) {
     var filteredImg = pictures.slice(0);
     switch (filterSort) {
       case 'popular':
-        renderPhoto(filteredImg);
+        filteredImg = pictures.slice(0);
         break;
       case 'new':
         var today = new Date();
@@ -64,20 +74,22 @@
         filteredImg = filteredImg.filter(function(el) {
           return Date.parse(el.date) > todaySet;
         });
-        renderPhoto(filteredImg);
         break;
       case 'discussed':
         filteredImg = filteredImg.sort(function(a, b) {
           return b.comments - a.comments;
         });
-        renderPhoto(filteredImg);
         break;
     }
+    renderPhoto(filteredImg, currentPage);
   }
 
   //Заполняем шаблон данными из полученного массива
-  function renderPhoto(photo) {
-    photo.forEach(function(elem) {
+  function renderPhoto(photo, pageNumber) {
+    var from = pageNumber * PAGE_SIZE;
+    var to = from + PAGE_SIZE;
+    var photoPage = photo.slice(from, to);
+    photoPage.forEach(function(elem) {
       var element = createTemplate(elem);
       container.appendChild(element);
     });
