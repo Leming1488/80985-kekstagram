@@ -1,9 +1,11 @@
 'use strict';
 
 (function() {
+
   var pictures = [];
   var filteredImg =[];
   var currentPage = 0;
+  var clear = false;
   var filterSort = 'popular';
   var PAGE_SIZE = 12;
   var xhr = new XMLHttpRequest();
@@ -16,11 +18,14 @@
   var sortFilterForm = document.forms['filter-sort'];
 
   window.addEventListener('scroll', function() {
-    if (document.documentElement.clientHeight + document.body.scrollTop === document.body.offsetHeight) {
-      if (currentPage < Math.ceil(filteredImg.length / PAGE_SIZE)) {
-        renderPhoto(filteredImg, ++currentPage);
+    clearTimeout(scrollTimeout);
+    var scrollTimeout = setTimeout(function() {
+      if (document.documentElement.clientHeight + document.body.scrollTop === document.body.offsetHeight) {
+        if (currentPage < Math.ceil(filteredImg.length / PAGE_SIZE)) {
+          renderPhoto(filteredImg, ++currentPage);
+        }
       }
-    }
+    }, 100);
   });
 
   function getImage() {
@@ -33,16 +38,9 @@
       pictures = JSON.parse(data);
       filterPhoto(filterSort);
       container.classList.remove('pictures-loading');
-      sortFilterForm.onchange = function() {
-        container.innerHTML = '';
-        var elems = sortFilterForm.elements.filter;
-        for (var i = 0; i < elems.length; i++) {
-          if (elems[i].checked) {
-            var filterSort = elems[i].value;
-          }
-        }
-        filterPhoto(filterSort);
-      };
+      sortFilterForm.addEventListener('click', function(event){
+        filterPhoto(event.target.value);
+      });
     };
 
     xhr.onprogress = function() {
@@ -69,7 +67,6 @@
   //Сортируем массив с картинками по фильтрам
   function filterPhoto(filterSort) {
     filteredImg = pictures.slice(0);
-    currentPage = 0;
     switch (filterSort) {
       case 'popular':
         filteredImg = pictures.slice(0);
@@ -90,18 +87,23 @@
         });
         break;
     }
-    renderPhoto(filteredImg, currentPage);
+    renderPhoto(filteredImg, currentPage, true);
   }
 
   //Заполняем шаблон данными из полученного массива
-  function renderPhoto(photo, pageNumber) {
+  function renderPhoto(photo, pageNumber, clear) {
+    if (clear) {
+      container.innerHTML = '';
+    }
+    var fragment = document.createDocumentFragment();
     var from = pageNumber * PAGE_SIZE;
     var to = from + PAGE_SIZE;
     var photoPage = photo.slice(from, to);
     photoPage.forEach(function(elem) {
       var element = createTemplate(elem);
-      container.appendChild(element);
+      fragment.appendChild(element);
     });
+    container.appendChild(fragment);
   }
 
 
