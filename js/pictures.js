@@ -1,6 +1,6 @@
 'use strict';
 
-(function () {
+(function() {
   var pictures = [];
   var filteredImg = [];
   var currentPage = 0;
@@ -15,9 +15,9 @@
    */
   var sortFilterForm = document.forms['filter-sort'];
 
-  window.addEventListener('scroll', function () {
+  window.addEventListener('scroll', function() {
     clearTimeout(scrollTimeout);
-    var scrollTimeout = setTimeout(function () {
+    var scrollTimeout = setTimeout(function() {
       if (document.body.scrollTop + document.documentElement.clientHeight === document.body.scrollHeight) {
         if (currentPage < Math.ceil(filteredImg.length / PAGE_SIZE)) {
           renderPhoto(filteredImg, ++currentPage);
@@ -26,16 +26,16 @@
     }, 100);
   });
 
-  function getImage () {
+  function getImage() {
     // Создаем запрос для получения массива с картинками
     xhr.open('GET', 'http://o0.github.io/assets/json/pictures.json');
     xhr.timeout = 30000;
-    xhr.onload = function (e) {
+    xhr.onload = function(e) {
       var data = e.target.response;
       pictures = JSON.parse(data);
       filterPhoto(filterSort);
       container.classList.remove('pictures-loading');
-      sortFilterForm.addEventListener('click', function (event) {
+      sortFilterForm.addEventListener('click', function(event) {
         if (event.target.tagName === 'INPUT') {
           container.innerHTML = '';
           currentPage = 0;
@@ -44,15 +44,15 @@
       });
     };
 
-    xhr.onprogress = function () {
+    xhr.onprogress = function() {
       container.classList.add('pictures-loading');
     };
 
-    xhr.ontimeout = function () {
+    xhr.ontimeout = function() {
       container.classList.add('pictures-failure');
     };
 
-    xhr.onabort = function () {
+    xhr.onabort = function() {
       container.classList.add('pictures-failure');
     };
 
@@ -64,7 +64,7 @@
   document.querySelector('.filters').classList.add('hidden');
 
   // Сортируем массив с картинками по фильтрам
-  function filterPhoto (filterSort) {
+  function filterPhoto(filterSort) {
     filteredImg = pictures.slice(0);
     switch (filterSort) {
       case 'popular':
@@ -73,15 +73,15 @@
       case 'new':
         var today = new Date();
         var todaySet = today.setDate(today.getDate() - 12);
-        filteredImg = filteredImg.sort(function (a, b) {
+        filteredImg = filteredImg.sort(function(a, b) {
           return (today - Date.parse(a.date)) - (today - Date.parse(b.date));
         });
-        filteredImg = filteredImg.filter(function (el) {
+        filteredImg = filteredImg.filter(function(el) {
           return Date.parse(el.date) > todaySet;
         });
         break;
       case 'discussed':
-        filteredImg = filteredImg.sort(function (a, b) {
+        filteredImg = filteredImg.sort(function(a, b) {
           return b.comments - a.comments;
         });
         break;
@@ -97,7 +97,7 @@
   }
 
   // Заполняем шаблон данными из полученного массива
-  function renderPhoto (photo, pageNumber, clear) {
+  function renderPhoto(photo, pageNumber, clear) {
     if (clear) {
       container.innerHTML = '';
     }
@@ -105,7 +105,7 @@
     var from = pageNumber * PAGE_SIZE;
     var to = from + PAGE_SIZE;
     var photoPage = photo.slice(from, to);
-    photoPage.forEach(function (elem) {
+    photoPage.forEach(function(elem) {
       var element = createTemplate(elem);
       fragment.appendChild(element);
     });
@@ -113,7 +113,7 @@
   }
 
   // Создаем шаблон
-  function createTemplate (data) {
+  function createTemplate(data) {
     var template = document.getElementById('picture-template');
 
     if ('content' in template) {
@@ -126,10 +126,10 @@
     pictureNew.title = data.date;
     var pictureOld = element.querySelector('.picture img');
 
-    pictureNew.onload = function () {
+    pictureNew.onload = function() {
       element.replaceChild(pictureNew, pictureOld);
     };
-    pictureNew.onerror = function () {
+    pictureNew.onerror = function() {
       element.replaceChild(pictureNew, pictureOld);
       pictureNew.parentElement.classList.add('picture-load-failure');
     };
