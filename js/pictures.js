@@ -18,7 +18,7 @@
   window.addEventListener('scroll', function() {
     clearTimeout(scrollTimeout);
     var scrollTimeout = setTimeout(function() {
-      if (document.body.scrollTop + document.documentElement.clientHeight === document.body.scrollHeight) {
+      if (window.pageYOffset + document.documentElement.clientHeight === document.body.scrollHeight) {
         if (currentPage < Math.ceil(filteredImg.length / PAGE_SIZE)) {
           renderPhoto(filteredImg, ++currentPage);
         }
@@ -86,7 +86,7 @@
         });
         break;
     }
-    if (document.body.scrollTop + document.documentElement.clientHeight === document.body.scrollHeight) {
+    if (window.pageYOffset + document.documentElement.clientHeight === document.body.scrollHeight) {
       while (currentPage < Math.ceil(filteredImg.length / PAGE_SIZE)) {
         renderPhoto(filteredImg, currentPage);
         currentPage++;
