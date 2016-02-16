@@ -23,6 +23,8 @@
     CUSTOM: 2
   };
 
+  var resizerPoint;
+
   /**
    * Регулярное выражение, проверяющее тип загружаемого файла. Составляется
    * из ключей FileType.
@@ -41,6 +43,11 @@
    */
   var currentResizer;
 
+
+  window.addEventListener('resizerchange', function() {
+     resizerPoint = resizer.getConstraint();
+     console.log(resizerPoint);
+  })
   /**
    * Удаляет текущий объект {@link Resizer}, чтобы создать новый с другим
    * изображением.
@@ -224,6 +231,7 @@
     uploadForm.classList.remove('invisible');
   });
 
+
   /**
    * Обработка валидации формы кадрирования.
    * @param {Event} evt
@@ -389,7 +397,6 @@
     // состояние или просто перезаписывать.
     filterImage.className = 'filter-image-preview ' + filterMap[selectedFilter];
   });
-
 
   cleanupResizer();
   updateBackground();
