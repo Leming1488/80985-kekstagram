@@ -36,7 +36,7 @@
       filterPhoto(filterSort);
       container.classList.remove('pictures-loading');
       sortFilterForm.addEventListener('click', function(event) {
-        if (event.target.tagName === 'INPUT') {
+        if (event.target.classList.contains('filters-radio')) {
           container.innerHTML = '';
           currentPage = 0;
           filterPhoto(event.target.value);
