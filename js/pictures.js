@@ -2,6 +2,10 @@
 
 (function() {
   var pictures = [];
+  var filteredImg = [];
+  var currentPage = 0;
+  var filterSort = 'popular';
+  var PAGE_SIZE = 12;
   var xhr = new XMLHttpRequest();
   var container = document.querySelector('.pictures');
 
@@ -11,49 +15,60 @@
    */
   var sortFilterForm = document.forms['filter-sort'];
 
-  //Создаем запрос для получения массива с картинками
-  xhr.open('GET', 'http://o0.github.io/assets/json/pictures.json');
-  xhr.timeout = 30000;
-
-  xhr.onload = function(e) {
-    var data = e.target.response;
-    pictures = JSON.parse(data);
-    renderPhoto(pictures);
-    container.classList.remove('pictures-loading');
-    sortFilterForm.onchange = function() {
-      container.innerHTML = '';
-      var elems = sortFilterForm.elements.filter;
-      for (var i = 0; i < elems.length; i++) {
-        if (elems[i].checked) {
-          var filterSort = elems[i].value;
+  window.addEventListener('scroll', function() {
+    clearTimeout(scrollTimeout);
+    var scrollTimeout = setTimeout(function() {
+      if (window.pageYOffset + document.documentElement.clientHeight === document.body.scrollHeight) {
+        if (currentPage < Math.ceil(filteredImg.length / PAGE_SIZE)) {
+          renderPhoto(filteredImg, ++currentPage);
         }
       }
+    }, 100);
+  });
+
+  function getImage() {
+    // Создаем запрос для получения массива с картинками
+    xhr.open('GET', 'http://o0.github.io/assets/json/pictures.json');
+    xhr.timeout = 30000;
+    xhr.onload = function(e) {
+      var data = e.target.response;
+      pictures = JSON.parse(data);
       filterPhoto(filterSort);
+      container.classList.remove('pictures-loading');
+      sortFilterForm.addEventListener('click', function(event) {
+        if (event.target.classList.contains('filters-radio')) {
+          container.innerHTML = '';
+          currentPage = 0;
+          filterPhoto(event.target.value);
+        }
+      });
     };
-  };
 
-  xhr.onprogress = function() {
-    container.classList.add('pictures-loading');
-  };
+    xhr.onprogress = function() {
+      container.classList.add('pictures-loading');
+    };
 
-  xhr.ontimeout = function() {
-    container.classList.add('pictures-failure');
-  };
+    xhr.ontimeout = function() {
+      container.classList.add('pictures-failure');
+    };
 
-  xhr.onabort = function() {
-    container.classList.add('pictures-failure');
-  };
+    xhr.onabort = function() {
+      container.classList.add('pictures-failure');
+    };
 
-  xhr.send();
+    xhr.send();
+  }
+
+  getImage();
 
   document.querySelector('.filters').classList.add('hidden');
 
-  //Сортируем массив с картинками по фильтрам
+  // Сортируем массив с картинками по фильтрам
   function filterPhoto(filterSort) {
-    var filteredImg = pictures.slice(0);
+    filteredImg = pictures.slice(0);
     switch (filterSort) {
       case 'popular':
-        renderPhoto(filteredImg);
+        filteredImg = pictures.slice(0);
         break;
       case 'new':
         var today = new Date();
@@ -64,29 +79,41 @@
         filteredImg = filteredImg.filter(function(el) {
           return Date.parse(el.date) > todaySet;
         });
-        renderPhoto(filteredImg);
         break;
       case 'discussed':
         filteredImg = filteredImg.sort(function(a, b) {
           return b.comments - a.comments;
         });
-        renderPhoto(filteredImg);
         break;
+    }
+    if (window.pageYOffset + document.documentElement.clientHeight === document.body.scrollHeight) {
+      while (currentPage < Math.ceil(filteredImg.length / PAGE_SIZE)) {
+        renderPhoto(filteredImg, currentPage);
+        currentPage++;
+      }
+    } else {
+      renderPhoto(filteredImg, currentPage, true);
     }
   }
 
-  //Заполняем шаблон данными из полученного массива
-  function renderPhoto(photo) {
-    photo.forEach(function(elem) {
+  // Заполняем шаблон данными из полученного массива
+  function renderPhoto(photo, pageNumber, clear) {
+    if (clear) {
+      container.innerHTML = '';
+    }
+    var fragment = document.createDocumentFragment();
+    var from = pageNumber * PAGE_SIZE;
+    var to = from + PAGE_SIZE;
+    var photoPage = photo.slice(from, to);
+    photoPage.forEach(function(elem) {
       var element = createTemplate(elem);
-      container.appendChild(element);
+      fragment.appendChild(element);
     });
+    container.appendChild(fragment);
   }
 
-
-  //Создаем шаблон
+  // Создаем шаблон
   function createTemplate(data) {
-
     var template = document.getElementById('picture-template');
 
     if ('content' in template) {
@@ -115,8 +142,4 @@
   }
 
   document.querySelector('.filters').classList.remove('hidden');
-
-
-
-
 })();
