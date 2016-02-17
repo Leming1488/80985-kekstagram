@@ -24,8 +24,6 @@
     CUSTOM: 2
   };
 
-  var resizerPoint;
-
   /**
    * Регулярное выражение, проверяющее тип загружаемого файла. Составляется
    * из ключей FileType.
@@ -44,10 +42,6 @@
    */
   var currentResizer;
 
-  window.addEventListener('resizerchange', function() {
-     resizerPoint = currentResizer.getConstraint().x;
-     console.log(resizerPoint);
-  });
   /**
    * Удаляет текущий объект {@link Resizer}, чтобы создать новый с другим
    * изображением.
@@ -79,12 +73,13 @@
    * @return {boolean}
    */
   function resizeFormIsValid() {
-    var resizeX = resizeForm.elements.x.value;
-    var resizeY = resizeForm.elements.y.value;
-    var resizeSize = resizeForm.elements.size.value;
+    var resizeX = +resizeForm.elements.x.value;
+    var resizeY = +resizeForm.elements.y.value;
+    var resizeSize = +resizeForm.elements.size.value;
     if (resizeX < 0 || resizeY < 0 ) {
       return 1;
-    } else if (resizeX + resizeSize > currentResizer._image.naturalWidth || resizeY + resizeSize > currentResizer._image.naturalHeight ) {
+    debugger;
+  } else if (resizeX + resizeSize > currentResizer._image.naturalWidth || resizeY + resizeSize > currentResizer._image.naturalHeight) {
       return 2;
     } else {
       return 3;
@@ -102,6 +97,10 @@
    * @type {HTMLFormElement}
    */
   var resizeForm = document.forms['upload-resize'];
+  var resizeX = Number(resizeForm.elements.x.value);
+  var resizeY = Number(resizeForm.elements.y.value);
+  var resizeSize = Number(resizeForm.elements.size.value);
+
 
   /**
    * Форма добавления фильтра.
@@ -173,7 +172,14 @@
     tooltip.style.top = cord.top - height - 10 + 'px';
     tooltip.style.left = cord.left - (width - evWidth) / 2 + 'px';
   }
-
+  /**
+   * Обработчик изменения изображения в окне
+   */
+  window.addEventListener('resizerchange', function() {
+    resizeForm.elements.x.value = currentResizer.getConstraint().x;
+    resizeForm.elements.y.value = currentResizer.getConstraint().y;
+    resizeForm.elements.size.value = currentResizer.getConstraint().side;
+  });
 
   /**
    * Обработчик изменения изображения в форме загрузки. Если загруженный
@@ -237,8 +243,10 @@
    * @param {Event} evt
    */
   resizeForm.addEventListener('change', function(evt) {
+    debugger;
     var element = evt.target;
     var text;
+    currentResizer.setConstraint(+resizeForm.elements.x.value, +resizeForm.elements.y.value, +resizeForm.elements.size.value);
 
     /**
      * Проверяет, действительно ли существует cookie с переданным названием.
