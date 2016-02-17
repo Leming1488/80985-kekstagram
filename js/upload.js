@@ -16,7 +16,6 @@
     'SVG+XML': ''
   };
 
-
   /** @enum {number} */
   var Action = {
     ERROR: 0,
@@ -73,16 +72,15 @@
    * @return {boolean}
    */
   function resizeFormIsValid() {
-    var resizeX =  Number(resizeForm.elements.x.value);
+    var resizeX = Number(resizeForm.elements.x.value);
     var resizeY = Number(resizeForm.elements.y.value);
     var resizeSize = Number(resizeForm.elements.size.value);
 
     currentResizer.setConstraint(resizeX, resizeY, resizeSize);
 
-    if (resizeX < 0 || resizeY < 0 ) {
+    if (resizeX < 0 || resizeY < 0) {
       return 1;
-    debugger;
-  } else if (resizeX + resizeSize > currentResizer._image.naturalWidth || resizeY + resizeSize > currentResizer._image.naturalHeight) {
+    } else if (resizeX + resizeSize > currentResizer._image.naturalWidth || resizeY + resizeSize > currentResizer._image.naturalHeight) {
       return 2;
     } else {
       return 3;
@@ -171,7 +169,7 @@
     tooltip.style.top = cord.top - height - 10 + 'px';
     tooltip.style.left = cord.left - (width - evWidth) / 2 + 'px';
   }
-  
+
   /**
    * Обработчик изменения изображения в окне
    */
