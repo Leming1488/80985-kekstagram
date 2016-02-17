@@ -73,9 +73,12 @@
    * @return {boolean}
    */
   function resizeFormIsValid() {
-    var resizeX = +resizeForm.elements.x.value;
-    var resizeY = +resizeForm.elements.y.value;
-    var resizeSize = +resizeForm.elements.size.value;
+    var resizeX =  Number(resizeForm.elements.x.value);
+    var resizeY = Number(resizeForm.elements.y.value);
+    var resizeSize = Number(resizeForm.elements.size.value);
+
+    currentResizer.setConstraint(resizeX, resizeY, resizeSize);
+
     if (resizeX < 0 || resizeY < 0 ) {
       return 1;
     debugger;
@@ -97,10 +100,6 @@
    * @type {HTMLFormElement}
    */
   var resizeForm = document.forms['upload-resize'];
-  var resizeX = Number(resizeForm.elements.x.value);
-  var resizeY = Number(resizeForm.elements.y.value);
-  var resizeSize = Number(resizeForm.elements.size.value);
-
 
   /**
    * Форма добавления фильтра.
@@ -172,6 +171,7 @@
     tooltip.style.top = cord.top - height - 10 + 'px';
     tooltip.style.left = cord.left - (width - evWidth) / 2 + 'px';
   }
+  
   /**
    * Обработчик изменения изображения в окне
    */
@@ -189,6 +189,7 @@
    * @param {Event} evt
    */
   uploadForm.addEventListener('change', function(evt) {
+
     var element = evt.target;
     if (element.id === 'upload-file') {
       // Проверка типа загружаемого файла, тип должен быть изображением
@@ -210,7 +211,6 @@
 
           hideMessage();
         });
-
         fileReader.readAsDataURL(element.files[0]);
       } else {
         // Показ сообщения об ошибке, если загружаемый файл, не является
@@ -243,11 +243,8 @@
    * @param {Event} evt
    */
   resizeForm.addEventListener('change', function(evt) {
-    debugger;
     var element = evt.target;
     var text;
-    currentResizer.setConstraint(+resizeForm.elements.x.value, +resizeForm.elements.y.value, +resizeForm.elements.size.value);
-
     /**
      * Проверяет, действительно ли существует cookie с переданным названием.
      * @return {boolean}
