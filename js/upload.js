@@ -16,6 +16,7 @@
     'SVG+XML': ''
   };
 
+
   /** @enum {number} */
   var Action = {
     ERROR: 0,
@@ -43,11 +44,10 @@
    */
   var currentResizer;
 
-
   window.addEventListener('resizerchange', function() {
-     resizerPoint = resizer.getConstraint();
+     resizerPoint = currentResizer.getConstraint().x;
      console.log(resizerPoint);
-  })
+  });
   /**
    * Удаляет текущий объект {@link Resizer}, чтобы создать новый с другим
    * изображением.
