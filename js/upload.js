@@ -71,19 +71,23 @@
    * Проверяет, валидны ли данные, в форме кадрирования.
    * @return {boolean}
    */
-  function resizeFormIsValid() {
+  function resizeFormIsValid(element) {
+    var text;
     var resizeX = Number(resizeForm.elements.x.value);
     var resizeY = Number(resizeForm.elements.y.value);
     var resizeSize = Number(resizeForm.elements.size.value);
 
-    currentResizer.setConstraint(resizeX, resizeY, resizeSize);
-
     if (resizeX < 0 || resizeY < 0) {
-      return 1;
+      text = 'Поля «сверху» и «слева» не могут быть отрицательными';
+      uploadFormTooltip(text, element);
+      resizeForm.fwd.setAttribute('disabled', true);
     } else if (resizeX + resizeSize > currentResizer._image.naturalWidth || resizeY + resizeSize > currentResizer._image.naturalHeight) {
-      return 2;
+      text = 'Сумма значений полей «слева» или «сверху» и «сторона» не должна быть больше ширины исходного изображения';
+      uploadFormTooltip(text, element);
+      resizeForm.fwd.setAttribute('disabled', true);
     } else {
-      return 3;
+      tooltip.classList.add('invisible');
+      resizeForm.fwd.removeAttribute('disabled');
     }
   }
 
@@ -174,9 +178,13 @@
    * Обработчик изменения изображения в окне
    */
   window.addEventListener('resizerchange', function() {
-    resizeForm.elements.x.value = currentResizer.getConstraint().x;
-    resizeForm.elements.y.value = currentResizer.getConstraint().y;
-    resizeForm.elements.size.value = currentResizer.getConstraint().side;
+
+    resizeForm.elements.x.value = Math.round(currentResizer.getConstraint().x);
+    resizeForm.elements.y.value = Math.round(currentResizer.getConstraint().y);
+    resizeForm.elements.size.value = Math.round(currentResizer.getConstraint().side);
+
+    resizeFormIsValid(resizeForm);
+
   });
 
   /**
@@ -210,6 +218,7 @@
           hideMessage();
         });
         fileReader.readAsDataURL(element.files[0]);
+
       } else {
         // Показ сообщения об ошибке, если загружаемый файл, не является
         // поддерживаемым изображением.
@@ -240,9 +249,14 @@
    * Обработка валидации формы кадрирования.
    * @param {Event} evt
    */
-  resizeForm.addEventListener('change', function(evt) {
-    var element = evt.target;
-    var text;
+  resizeForm.addEventListener('change', function(event) {
+
+    var resizeX = Number(resizeForm.elements.x.value);
+    var resizeY = Number(resizeForm.elements.y.value);
+    var resizeSize = Number(resizeForm.elements.size.value);
+    currentResizer.setConstraint(resizeX, resizeY, resizeSize);
+
+
     /**
      * Проверяет, действительно ли существует cookie с переданным названием.
      * @return {boolean}
@@ -270,22 +284,8 @@
       }
     }
 
-    switch (resizeFormIsValid()) {
-      case 1:
-        text = 'Поля «сверху» и «слева» не могут быть отрицательными';
-        uploadFormTooltip(text, element);
-        resizeForm.fwd.setAttribute('disabled', true);
-        break;
-      case 2:
-        text = 'Сумма значений полей «слева» или «сверху» и «сторона» не должна быть больше ширины исходного изображения';
-        uploadFormTooltip(text, element);
-        resizeForm.fwd.setAttribute('disabled', true);
-        break;
-      case 3:
-        tooltip.classList.add('invisible');
-        resizeForm.fwd.removeAttribute('disabled');
-        break;
-    }
+    resizeFormIsValid(event.target);
+
   });
 
 
