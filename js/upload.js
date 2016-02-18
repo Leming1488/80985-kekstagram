@@ -71,7 +71,7 @@
    * Проверяет, валидны ли данные, в форме кадрирования.
    * @return {boolean}
    */
-  function resizeFormIsValid(element) {
+  function resizeFormIsValid() {
     var text;
     var resizeX = Number(resizeForm.elements.x.value);
     var resizeY = Number(resizeForm.elements.y.value);
@@ -79,11 +79,11 @@
 
     if (resizeX < 0 || resizeY < 0) {
       text = 'Поля «сверху» и «слева» не могут быть отрицательными';
-      uploadFormTooltip(text, element);
+      uploadFormTooltip(text, resizeForm.elements.size);
       resizeForm.fwd.setAttribute('disabled', true);
     } else if (resizeX + resizeSize > currentResizer._image.naturalWidth || resizeY + resizeSize > currentResizer._image.naturalHeight) {
       text = 'Сумма значений полей «слева» или «сверху» и «сторона» не должна быть больше ширины исходного изображения';
-      uploadFormTooltip(text, element);
+      uploadFormTooltip(text, resizeForm.elements.size);
       resizeForm.fwd.setAttribute('disabled', true);
     } else {
       tooltip.classList.add('invisible');
@@ -157,9 +157,9 @@
   }
 
   /**
-  * Сообщение об ошибке, если данные невалидны.
-  * @type {HTMLElement}
-  */
+   * Сообщение об ошибке, если данные невалидны.
+   * @type {HTMLElement}
+   */
 
   var tooltip = document.querySelector('.upload-form-tooltip');
 
@@ -183,7 +183,7 @@
     resizeForm.elements.y.value = Math.round(currentResizer.getConstraint().y);
     resizeForm.elements.size.value = Math.round(currentResizer.getConstraint().side);
 
-    resizeFormIsValid(resizeForm);
+    resizeFormIsValid();
 
   });
 
@@ -224,9 +224,12 @@
         // поддерживаемым изображением.
         showMessage(Action.ERROR);
       }
+      resizeFormIsValid();
     }
   });
 
+  uploadForm.elements.filename.addEventListener('change', function(evt) {
+  });
   /**
    * Обработка сброса формы кадрирования. Возвращает в начальное состояние
    * и обновляет фон.
@@ -284,7 +287,7 @@
       }
     }
 
-    resizeFormIsValid(event.target);
+    resizeFormIsValid();
 
   });
 
@@ -345,7 +348,7 @@
      */
     var expiresDate = function() {
       function diffDate(myBithday) {
-        var total = Math.round( (today - myBithday) / (1000 * 60 * 60 * 24) );
+        var total = Math.round((today - myBithday) / (1000 * 60 * 60 * 24));
         today.setDate(todayDate + total);
         return today.toUTCString();
       }
@@ -356,7 +359,7 @@
       var myBithday = new Date(todayYear, myMonth, myDate);
       var todayDate = today.getDate();
       var todayMonth = today.getMonth();
-      if (todayMonth > myMonth || (todayMonth === myMonth && todayDate > myDate ) ) {
+      if (todayMonth > myMonth || (todayMonth === myMonth && todayDate > myDate)) {
         return diffDate(myBithday);
       } else {
         myBithday.setFullYear(todayYear - 1);
