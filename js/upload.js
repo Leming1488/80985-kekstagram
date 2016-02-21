@@ -1,5 +1,5 @@
 /* global Resizer: true */
-
+/* global docCookies: true */
 /**
  * @fileoverview
  * @author Igor Alexeenko (o0)
@@ -67,6 +67,7 @@
     backgroundElement.style.backgroundImage = 'url(' + images[randomImageNumber] + ')';
   }
 
+
   /**
    * Проверяет, валидны ли данные, в форме кадрирования.
    * @return {boolean}
@@ -79,15 +80,14 @@
 
     if (resizeX < 0 || resizeY < 0) {
       text = 'Поля «сверху» и «слева» не могут быть отрицательными';
-      uploadFormTooltip(text, resizeForm.elements.size);
-      resizeForm.fwd.setAttribute('disabled', true);
+      validAction(text);
     } else if (resizeX + resizeSize > currentResizer._image.naturalWidth || resizeY + resizeSize > currentResizer._image.naturalHeight) {
       text = 'Сумма значений полей «слева» или «сверху» и «сторона» не должна быть больше ширины исходного изображения';
-      uploadFormTooltip(text, resizeForm.elements.size);
-      resizeForm.fwd.setAttribute('disabled', true);
+      validAction(text);
     } else {
       tooltip.classList.add('invisible');
       resizeForm.fwd.removeAttribute('disabled');
+      resizeForm.fwd.style.opacity = '1';
     }
   }
 
@@ -174,6 +174,12 @@
     tooltip.style.left = cord.left - (width - evWidth) / 2 + 'px';
   }
 
+  function validAction(message) {
+    uploadFormTooltip(message, resizeForm.elements.size);
+    resizeForm.fwd.setAttribute('disabled', true);
+    resizeForm.fwd.style.opacity = '0.5';
+  }
+
   /**
    * Обработчик изменения изображения в окне
    */
@@ -207,7 +213,6 @@
 
         fileReader.addEventListener('load', function() {
           cleanupResizer();
-
           currentResizer = new Resizer(fileReader.result);
           currentResizer.setElement(resizeForm);
           uploadMessage.classList.add('invisible');
@@ -219,17 +224,16 @@
         });
         fileReader.readAsDataURL(element.files[0]);
 
+
       } else {
         // Показ сообщения об ошибке, если загружаемый файл, не является
         // поддерживаемым изображением.
         showMessage(Action.ERROR);
       }
-      resizeFormIsValid();
     }
   });
 
-  uploadForm.elements.filename.addEventListener('change', function(evt) {
-  });
+  uploadForm.addEventListener('change', resizeFormIsValid);
   /**
    * Обработка сброса формы кадрирования. Возвращает в начальное состояние
    * и обновляет фон.
@@ -252,7 +256,7 @@
    * Обработка валидации формы кадрирования.
    * @param {Event} evt
    */
-  resizeForm.addEventListener('change', function(event) {
+  resizeForm.addEventListener('change', function() {
 
     var resizeX = Number(resizeForm.elements.x.value);
     var resizeY = Number(resizeForm.elements.y.value);
