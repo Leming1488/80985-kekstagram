@@ -77,11 +77,13 @@
     var resizeX = Number(resizeForm.elements.x.value);
     var resizeY = Number(resizeForm.elements.y.value);
     var resizeSize = Number(resizeForm.elements.size.value);
+    var photoWidth = currentResizer._image.naturalWidth;
+    var photoHeight = currentResizer._image.naturalHeight;
 
     if (resizeX < 0 || resizeY < 0) {
       text = 'Поля «сверху» и «слева» не могут быть отрицательными';
       validAction(text);
-    } else if (resizeX + resizeSize > currentResizer._image.naturalWidth || resizeY + resizeSize > currentResizer._image.naturalHeight) {
+    } else if (resizeX + resizeSize > photoWidth || resizeY + resizeSize > photoHeight) {
       text = 'Сумма значений полей «слева» или «сверху» и «сторона» не должна быть больше ширины исходного изображения';
       validAction(text);
     } else {
@@ -233,7 +235,6 @@
     }
   });
 
-  uploadForm.addEventListener('change', resizeFormIsValid);
   /**
    * Обработка сброса формы кадрирования. Возвращает в начальное состояние
    * и обновляет фон.
