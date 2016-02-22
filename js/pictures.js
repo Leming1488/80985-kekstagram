@@ -1,3 +1,4 @@
+/* global Photo: true */
 'use strict';
 
 (function() {
@@ -99,46 +100,21 @@
   // Заполняем шаблон данными из полученного массива
   function renderPhoto(photo, pageNumber, clear) {
     if (clear) {
-      container.innerHTML = '';
+      var renderPhotos = document.querySelectorAll('.photo');
+      [].forEach.call(renderPhotos, function(elem) {
+        container.removeChild(elem);
+      });
     }
     var fragment = document.createDocumentFragment();
     var from = pageNumber * PAGE_SIZE;
     var to = from + PAGE_SIZE;
     var photoPage = photo.slice(from, to);
     photoPage.forEach(function(elem) {
-      var element = createTemplate(elem);
-      fragment.appendChild(element);
+      var photoElement = new Photo(elem);
+      photoElement.render();
+      fragment.appendChild(photoElement.element);
     });
     container.appendChild(fragment);
-  }
-
-  // Создаем шаблон
-  function createTemplate(data) {
-    var template = document.getElementById('picture-template');
-
-    if ('content' in template) {
-      var element = template.content.children[0].cloneNode(true);
-    } else {
-      element = template.childNodes[0].cloneNode(true);
-    }
-
-    var pictureNew = new Image(182, 182);
-    pictureNew.title = data.date;
-    var pictureOld = element.querySelector('.picture img');
-
-    pictureNew.onload = function() {
-      element.replaceChild(pictureNew, pictureOld);
-    };
-    pictureNew.onerror = function() {
-      element.replaceChild(pictureNew, pictureOld);
-      pictureNew.parentElement.classList.add('picture-load-failure');
-    };
-
-    pictureNew.src = data.url;
-    element.querySelector('.picture-comments').textContent = data.comments;
-    element.querySelector('.picture-likes').textContent = data.likes;
-
-    return element;
   }
 
   document.querySelector('.filters').classList.remove('hidden');
