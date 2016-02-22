@@ -4,7 +4,7 @@
   var pictures = [];
   var filteredImg = [];
   var currentPage = 0;
-  var filterSort = 'popular';
+  var filterAct = 'popular';
   var PAGE_SIZE = 12;
   var xhr = new XMLHttpRequest();
   var container = document.querySelector('.pictures');
@@ -33,7 +33,7 @@
     xhr.onload = function(e) {
       var data = e.target.response;
       pictures = JSON.parse(data);
-      filterPhoto(filterSort);
+      filterPhoto(filterAct);
       container.classList.remove('pictures-loading');
       sortFilterForm.addEventListener('click', function(event) {
         if (event.target.classList.contains('filters-radio')) {

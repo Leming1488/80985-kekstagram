@@ -1,5 +1,5 @@
 /* global Resizer: true */
-
+/* global docCookies: true */
 /**
  * @fileoverview
  * @author Igor Alexeenko (o0)
@@ -67,20 +67,27 @@
     backgroundElement.style.backgroundImage = 'url(' + images[randomImageNumber] + ')';
   }
 
+
   /**
    * Проверяет, валидны ли данные, в форме кадрирования.
    * @return {boolean}
    */
   function resizeFormIsValid() {
-    var resizeX = resizeForm.elements.x.value;
-    var resizeY = resizeForm.elements.y.value;
-    var resizeSize = resizeForm.elements.size.value;
-    if (resizeX < 0 || resizeY < 0 ) {
-      return 1;
-    } else if (resizeX + resizeSize > currentResizer._image.naturalWidth || resizeY + resizeSize > currentResizer._image.naturalHeight ) {
-      return 2;
+    var text;
+    var resizeX = Number(resizeForm.elements.x.value);
+    var resizeY = Number(resizeForm.elements.y.value);
+    var resizeSize = Number(resizeForm.elements.size.value);
+
+    if (resizeX < 0 || resizeY < 0) {
+      text = 'Поля «сверху» и «слева» не могут быть отрицательными';
+      validAction(text);
+    } else if (resizeX + resizeSize > currentResizer._image.naturalWidth || resizeY + resizeSize > currentResizer._image.naturalHeight) {
+      text = 'Сумма значений полей «слева» или «сверху» и «сторона» не должна быть больше ширины исходного изображения';
+      validAction(text);
     } else {
-      return 3;
+      tooltip.classList.add('invisible');
+      resizeForm.fwd.removeAttribute('disabled');
+      resizeForm.fwd.style.opacity = '1';
     }
   }
 
@@ -150,9 +157,9 @@
   }
 
   /**
-  * Сообщение об ошибке, если данные невалидны.
-  * @type {HTMLElement}
-  */
+   * Сообщение об ошибке, если данные невалидны.
+   * @type {HTMLElement}
+   */
 
   var tooltip = document.querySelector('.upload-form-tooltip');
 
@@ -167,6 +174,24 @@
     tooltip.style.left = cord.left - (width - evWidth) / 2 + 'px';
   }
 
+  function validAction(message) {
+    uploadFormTooltip(message, resizeForm.elements.size);
+    resizeForm.fwd.setAttribute('disabled', true);
+    resizeForm.fwd.style.opacity = '0.5';
+  }
+
+  /**
+   * Обработчик изменения изображения в окне
+   */
+  window.addEventListener('resizerchange', function() {
+
+    resizeForm.elements.x.value = Math.round(currentResizer.getConstraint().x);
+    resizeForm.elements.y.value = Math.round(currentResizer.getConstraint().y);
+    resizeForm.elements.size.value = Math.round(currentResizer.getConstraint().side);
+
+    resizeFormIsValid();
+
+  });
 
   /**
    * Обработчик изменения изображения в форме загрузки. Если загруженный
@@ -175,7 +200,8 @@
    * и показывается форма кадрирования.
    * @param {Event} evt
    */
-  uploadForm.onchange = function(evt) {
+  uploadForm.addEventListener('change', function(evt) {
+
     var element = evt.target;
     if (element.id === 'upload-file') {
       // Проверка типа загружаемого файла, тип должен быть изображением
@@ -185,9 +211,8 @@
 
         showMessage(Action.UPLOADING);
 
-        fileReader.onload = function() {
+        fileReader.addEventListener('load', function() {
           cleanupResizer();
-
           currentResizer = new Resizer(fileReader.result);
           currentResizer.setElement(resizeForm);
           uploadMessage.classList.add('invisible');
@@ -196,23 +221,25 @@
           resizeForm.classList.remove('invisible');
 
           hideMessage();
-        };
-
+        });
         fileReader.readAsDataURL(element.files[0]);
+
+
       } else {
         // Показ сообщения об ошибке, если загружаемый файл, не является
         // поддерживаемым изображением.
         showMessage(Action.ERROR);
       }
     }
-  };
+  });
 
+  uploadForm.addEventListener('change', resizeFormIsValid);
   /**
    * Обработка сброса формы кадрирования. Возвращает в начальное состояние
    * и обновляет фон.
    * @param {Event} evt
    */
-  resizeForm.onreset = function(evt) {
+  resizeForm.addEventListener('reset', function(evt) {
     evt.preventDefault();
 
     cleanupResizer();
@@ -222,15 +249,20 @@
 
     resizeForm.classList.add('invisible');
     uploadForm.classList.remove('invisible');
-  };
+  });
+
 
   /**
    * Обработка валидации формы кадрирования.
    * @param {Event} evt
    */
-  resizeForm.onchange = function(evt) {
-    var element = evt.target;
-    var text;
+  resizeForm.addEventListener('change', function() {
+
+    var resizeX = Number(resizeForm.elements.x.value);
+    var resizeY = Number(resizeForm.elements.y.value);
+    var resizeSize = Number(resizeForm.elements.size.value);
+    currentResizer.setConstraint(resizeX, resizeY, resizeSize);
+
 
     /**
      * Проверяет, действительно ли существует cookie с переданным названием.
@@ -259,23 +291,9 @@
       }
     }
 
-    switch (resizeFormIsValid()) {
-      case 1:
-        text = 'Поля «сверху» и «слева» не могут быть отрицательными';
-        uploadFormTooltip(text, element);
-        resizeForm.fwd.setAttribute('disabled', true);
-        break;
-      case 2:
-        text = 'Сумма значений полей «слева» или «сверху» и «сторона» не должна быть больше ширины исходного изображения';
-        uploadFormTooltip(text, element);
-        resizeForm.fwd.setAttribute('disabled', true);
-        break;
-      case 3:
-        tooltip.classList.add('invisible');
-        resizeForm.fwd.removeAttribute('disabled');
-        break;
-    }
-  };
+    resizeFormIsValid();
+
+  });
 
 
   /**
@@ -283,30 +301,30 @@
    * кропнутое изображение в форму добавления фильтра и показывает ее.
    * @param {Event} evt
    */
-  resizeForm.onsubmit = function(evt) {
+  resizeForm.addEventListener('submit', function(evt) {
     evt.preventDefault();
     filterImage.src = currentResizer.exportImage().src;
     resizeForm.classList.add('invisible');
     filterForm.classList.remove('invisible');
-  };
+  });
 
   /**
    * Сброс формы фильтра. Показывает форму кадрирования.
    * @param {Event} evt
    */
-  filterForm.onreset = function(evt) {
+  filterForm.addEventListener('reset', function(evt) {
     evt.preventDefault();
 
     filterForm.classList.add('invisible');
     resizeForm.classList.remove('invisible');
-  };
+  });
 
   /**
    * Отправка формы фильтра. Возвращает в начальное состояние, предварительно
    * записав сохраненный фильтр в cookie.
    * @param {Event} evt
    */
-  filterForm.onsubmit = function(evt) {
+  filterForm.addEventListener('submit', function(evt) {
     evt.preventDefault();
 
     cleanupResizer();
@@ -334,7 +352,7 @@
      */
     var expiresDate = function() {
       function diffDate(myBithday) {
-        var total = Math.round( (today - myBithday) / (1000 * 60 * 60 * 24) );
+        var total = Math.round((today - myBithday) / (1000 * 60 * 60 * 24));
         today.setDate(todayDate + total);
         return today.toUTCString();
       }
@@ -345,7 +363,7 @@
       var myBithday = new Date(todayYear, myMonth, myDate);
       var todayDate = today.getDate();
       var todayMonth = today.getMonth();
-      if (todayMonth > myMonth || (todayMonth === myMonth && todayDate > myDate ) ) {
+      if (todayMonth > myMonth || (todayMonth === myMonth && todayDate > myDate)) {
         return diffDate(myBithday);
       } else {
         myBithday.setFullYear(todayYear - 1);
@@ -361,13 +379,13 @@
     document.cookie = 'filter=' + filter.value + ';expires=' + expiresDate();
 
     filterForm.submit();
-  };
+  });
 
   /**
    * Обработчик изменения фильтра. Добавляет класс из filterMap соответствующий
    * выбранному значению в форме.
    */
-  filterForm.onchange = function() {
+  filterForm.addEventListener('change', function() {
     if (!filterMap) {
       // Ленивая инициализация. Объект не создается до тех пор, пока
       // не понадобится прочитать его в первый раз, а после этого запоминается
@@ -388,8 +406,7 @@
     // убрать предыдущий примененный класс. Для этого нужно или запоминать его
     // состояние или просто перезаписывать.
     filterImage.className = 'filter-image-preview ' + filterMap[selectedFilter];
-  };
-
+  });
 
   cleanupResizer();
   updateBackground();
