@@ -1,4 +1,6 @@
 /* global Photo: true */
+/* global Gallery: true */
+
 'use strict';
 
 (function() {
@@ -9,6 +11,7 @@
   var PAGE_SIZE = 12;
   var xhr = new XMLHttpRequest();
   var container = document.querySelector('.pictures');
+  var gallery = new Gallery();
 
   /**
    * Форма сортировки изображения.
@@ -102,6 +105,7 @@
     if (clear) {
       var renderPhotos = document.querySelectorAll('.photo');
       [].forEach.call(renderPhotos, function(elem) {
+        elem.removeEventListener('click', _onPhotoClick);
         container.removeChild(elem);
       });
     }
@@ -112,9 +116,15 @@
     photoPage.forEach(function(elem) {
       var photoElement = new Photo(elem);
       photoElement.render();
+      photoElement.element.addEventListener('click', _onPhotoClick);
       fragment.appendChild(photoElement.element);
     });
     container.appendChild(fragment);
+  }
+
+  function _onPhotoClick(event) {
+    event.preventDefault();
+    gallery.show();
   }
 
   document.querySelector('.filters').classList.remove('hidden');
