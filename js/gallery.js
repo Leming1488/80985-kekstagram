@@ -13,7 +13,7 @@
       },
       hide: function() {
         this.element.classList.add('invisible');
-        document.removeEventListener('keydown', this._onDocumentKeyDown)
+        document.removeEventListener('keydown', this._onDocumentKeyDown);
       },
       _onDocumentKeyDown: function(event) {
         if (String(event.keyCode) === '27') {
