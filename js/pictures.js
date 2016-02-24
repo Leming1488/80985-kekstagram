@@ -8,7 +8,7 @@
   var filteredImg = [];
   var currentPage = 0;
   var filterAct = 'popular';
-  var PAGE_SIZE = 12;
+  var PAGE_SIZE = 8;
   var xhr = new XMLHttpRequest();
   var container = document.querySelector('.pictures');
   var gallery = new Gallery();
@@ -22,7 +22,7 @@
   window.addEventListener('scroll', function() {
     clearTimeout(scrollTimeout);
     var scrollTimeout = setTimeout(function() {
-      if (window.pageYOffset + document.documentElement.clientHeight === document.body.scrollHeight) {
+      if (window.pageYOffset + document.documentElement.clientHeight === document.documentElement.scrollHeight) {
         if (currentPage < Math.ceil(filteredImg.length / PAGE_SIZE)) {
           renderPhoto(filteredImg, ++currentPage);
         }
@@ -90,7 +90,8 @@
         });
         break;
     }
-    if (window.pageYOffset + document.documentElement.clientHeight === document.body.scrollHeight) {
+    debugger;
+    if (window.pageYOffset + document.documentElement.clientHeight === document.documentElement.scrollHeight) {
       while (currentPage < Math.ceil(filteredImg.length / PAGE_SIZE)) {
         renderPhoto(filteredImg, currentPage);
         currentPage++;
@@ -109,6 +110,7 @@
         container.removeChild(elem);
       });
     }
+    debugger;
     var fragment = document.createDocumentFragment();
     var from = pageNumber * PAGE_SIZE;
     var to = from + PAGE_SIZE;
