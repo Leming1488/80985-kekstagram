@@ -1,4 +1,6 @@
 /* global Photo: true */
+/* global Gallery: true */
+
 'use strict';
 
 (function() {
@@ -6,9 +8,10 @@
   var filteredImg = [];
   var currentPage = 0;
   var filterAct = 'popular';
-  var PAGE_SIZE = 12;
+  var PAGE_SIZE = 8;
   var xhr = new XMLHttpRequest();
   var container = document.querySelector('.pictures');
+  var gallery = new Gallery();
 
   /**
    * Форма сортировки изображения.
@@ -19,7 +22,7 @@
   window.addEventListener('scroll', function() {
     clearTimeout(scrollTimeout);
     var scrollTimeout = setTimeout(function() {
-      if (window.pageYOffset + document.documentElement.clientHeight === document.body.scrollHeight) {
+      if (window.pageYOffset + document.documentElement.clientHeight === document.documentElement.scrollHeight) {
         if (currentPage < Math.ceil(filteredImg.length / PAGE_SIZE)) {
           renderPhoto(filteredImg, ++currentPage);
         }
@@ -87,7 +90,8 @@
         });
         break;
     }
-    if (window.pageYOffset + document.documentElement.clientHeight === document.body.scrollHeight) {
+    debugger;
+    if (window.pageYOffset + document.documentElement.clientHeight === document.documentElement.scrollHeight) {
       while (currentPage < Math.ceil(filteredImg.length / PAGE_SIZE)) {
         renderPhoto(filteredImg, currentPage);
         currentPage++;
@@ -102,9 +106,11 @@
     if (clear) {
       var renderPhotos = document.querySelectorAll('.photo');
       [].forEach.call(renderPhotos, function(elem) {
+        elem.removeEventListener('click', _onPhotoClick);
         container.removeChild(elem);
       });
     }
+    debugger;
     var fragment = document.createDocumentFragment();
     var from = pageNumber * PAGE_SIZE;
     var to = from + PAGE_SIZE;
@@ -112,9 +118,15 @@
     photoPage.forEach(function(elem) {
       var photoElement = new Photo(elem);
       photoElement.render();
+      photoElement.element.addEventListener('click', _onPhotoClick);
       fragment.appendChild(photoElement.element);
     });
     container.appendChild(fragment);
+  }
+
+  function _onPhotoClick(event) {
+    event.preventDefault();
+    gallery.show();
   }
 
   document.querySelector('.filters').classList.remove('hidden');
