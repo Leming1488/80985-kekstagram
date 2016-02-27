@@ -90,7 +90,6 @@
         });
         break;
     }
-    debugger;
     if (window.pageYOffset + document.documentElement.clientHeight === document.documentElement.scrollHeight) {
       while (currentPage < Math.ceil(filteredImg.length / PAGE_SIZE)) {
         renderPhoto(filteredImg, currentPage);
@@ -110,7 +109,6 @@
         container.removeChild(elem);
       });
     }
-    debugger;
     var fragment = document.createDocumentFragment();
     var from = pageNumber * PAGE_SIZE;
     var to = from + PAGE_SIZE;
