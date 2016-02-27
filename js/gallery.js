@@ -15,6 +15,9 @@
         this.element.classList.add('invisible');
         document.removeEventListener('keydown', this._onDocumentKeyDown);
       },
+      setPictures: function(array) {
+        this.picture = Object.create(array);
+      },
       _onDocumentKeyDown: function(event) {
         if (String(event.keyCode) === '27') {
           this.hide();

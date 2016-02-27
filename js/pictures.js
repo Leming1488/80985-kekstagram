@@ -110,7 +110,6 @@
         container.removeChild(elem);
       });
     }
-    debugger;
     var fragment = document.createDocumentFragment();
     var from = pageNumber * PAGE_SIZE;
     var to = from + PAGE_SIZE;
