@@ -33,7 +33,15 @@
         pictureNew.src = this._data.url;
         this.element.querySelector('.picture-comments').textContent = this._data.comments;
         this.element.querySelector('.picture-likes').textContent = this._data.likes;
-      }
+        this.element.addEventListener('click', function(event) {
+          if (event.target.classList.contains('picture') && !this.element.classList.contains('picture-load-failure')) {
+            if (typeof this.onClick === 'function') {
+              this.onClick();
+            }
+          }
+        }.bind(this));
+      },
+      onClick: null
     };
     window.Photo = Photo;
   })();

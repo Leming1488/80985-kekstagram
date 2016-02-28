@@ -90,7 +90,6 @@
         });
         break;
     }
-    debugger;
     if (window.pageYOffset + document.documentElement.clientHeight === document.documentElement.scrollHeight) {
       while (currentPage < Math.ceil(filteredImg.length / PAGE_SIZE)) {
         renderPhoto(filteredImg, currentPage);
@@ -117,15 +116,16 @@
     photoPage.forEach(function(elem) {
       var photoElement = new Photo(elem);
       photoElement.render();
-      photoElement.element.addEventListener('click', _onPhotoClick);
       fragment.appendChild(photoElement.element);
     });
     container.appendChild(fragment);
   }
 
-  function _onPhotoClick(event) {
+  Photo.onClikc(event) {
     event.preventDefault();
     gallery.show();
+    gallery.setPictures(pictures);
+    gallery.setCurrentPicture();
   }
 
   document.querySelector('.filters').classList.remove('hidden');
