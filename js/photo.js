@@ -1,3 +1,5 @@
+/* global PhotoBase: true */
+
   'use strict';
 
   (function() {
@@ -5,9 +7,12 @@
     * @constructor
     * @param {string} data
     */
-    var Photo = function(data) {
-      this._data = data;
+    var Photo = function() {
+      this._onClick = this._onClick.bind(this);
     };
+
+
+    inherit(Photo, new PhotoBase());
 
     Photo.prototype = {
       render: function() {
@@ -33,15 +38,24 @@
         pictureNew.src = this._data.url;
         this.element.querySelector('.picture-comments').textContent = this._data.comments;
         this.element.querySelector('.picture-likes').textContent = this._data.likes;
-        this.element.addEventListener('click', function(event) {
-          if (event.target.classList.contains('picture') && !this.element.classList.contains('picture-load-failure')) {
-            if (typeof this.onClick === 'function') {
-              this.onClick();
-            }
-          }
-        }.bind(this));
-      },
-      onClick: null
+        this.element.addEventListener('click', this._onClick);
+      }
     };
+
+    Photo.prototype._onClick = function() {
+      event.preventDefault();
+      if (event.currentTarget.classList.contains('picture') && !this.element.classList.contains('picture-load-failure')) {
+        if (typeof this.onClick === 'function') {
+          this.onClick();
+        }
+      }
+    };
+
+    Photo.prototype.remove = function() {
+      this.element.removeEventListener('click', this._onClick);
+    };
+
+    Photo.prototype.onClick = null;
+
     window.Photo = Photo;
   })();

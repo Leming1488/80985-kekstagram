@@ -6,6 +6,7 @@
 (function() {
   var pictures = [];
   var filteredImg = [];
+  var renderPhotos = [];
   var currentPage = 0;
   var filterAct = 'popular';
   var PAGE_SIZE = 8;
@@ -103,29 +104,30 @@
   // Заполняем шаблон данными из полученного массива
   function renderPhoto(photo, pageNumber, clear) {
     if (clear) {
-      var renderPhotos = document.querySelectorAll('.photo');
-      [].forEach.call(renderPhotos, function(elem) {
-        elem.removeEventListener('click', _onPhotoClick);
+      var elem;
+      while ((elem = renderPhotos.shift())) {
         container.removeChild(elem);
-      });
+        elem.onClick = null;
+        elem.remove();
+      }
     }
     var fragment = document.createDocumentFragment();
     var from = pageNumber * PAGE_SIZE;
     var to = from + PAGE_SIZE;
     var photoPage = photo.slice(from, to);
-    photoPage.forEach(function(elem) {
-      var photoElement = new Photo(elem);
+    renderPhotos = renderPhotos.concat(photoPage.map(function(photo, i) {
+      debugger;
+      var photoElement = new Photo();
+      photoElement.setData(photo);
       photoElement.render();
       fragment.appendChild(photoElement.element);
-    });
+      photoElement.onClick = function() {
+        gallery.setPictures(photoPage);
+        gallery.show();
+        gallery.setCurrentPicture(i);
+      };
+    }));
     container.appendChild(fragment);
-  }
-
-  Photo.onClikc(event) {
-    event.preventDefault();
-    gallery.show();
-    gallery.setPictures(pictures);
-    gallery.setCurrentPicture();
   }
 
   document.querySelector('.filters').classList.remove('hidden');
