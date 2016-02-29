@@ -116,7 +116,6 @@
     var to = from + PAGE_SIZE;
     var photoPage = photo.slice(from, to);
     renderPhotos = renderPhotos.concat(photoPage.map(function(photo, i) {
-      debugger;
       var photoElement = new Photo();
       photoElement.setData(photo);
       photoElement.render();

@@ -11,8 +11,7 @@
       this._onClick = this._onClick.bind(this);
     };
 
-
-    inherit(Photo, new PhotoBase());
+    Photo.prototype = new PhotoBase();
 
     Photo.prototype = {
       render: function() {
@@ -22,7 +21,6 @@
         } else {
           this.element = template.childNodes[0].cloneNode(true);
         }
-
         var pictureNew = new Image(182, 182);
         pictureNew.title = this._data.date;
         var pictureOld = this.element.querySelector('.picture img');
