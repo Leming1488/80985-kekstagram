@@ -1,11 +1,11 @@
 'use strict';
-  (function() {
+(function() {
 
-  function inherit(Child, Parent) {
-    function Empty() {}
-    Empty.prototype = Parent.prototype;
-    Child.prototype = new Empty();
-  }
+function inherit(Child, Parent) {
+  function Empty() {}
+  Empty.prototype = Parent.prototype;
+  Child.prototype = new Empty();
+}
 
-  window.inherit = inherit;
+window.inherit = inherit;
 })();
