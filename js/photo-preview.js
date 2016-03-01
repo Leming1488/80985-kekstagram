@@ -1,4 +1,5 @@
 /* global PhotoBase: true */
+/* global inherit: true */
   'use strict';
   (function() {
 
@@ -17,7 +18,6 @@
           this.element.querySelector('.gallery-overlay-image').src = this.getData()[i].url;
           this._like.textContent = this.getData()[i].likes;
           this.element.querySelector('.gallery-overlay-controls-comments').textContent = this.getData()[i].comments;
-          this.element.addEventListener('keydown', this._onKeyDown);
           this._like.addEventListener('click', this._onClick);
         }
       }.bind(this));

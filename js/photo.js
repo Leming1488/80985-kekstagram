@@ -1,5 +1,5 @@
 /* global PhotoBase: true */
-
+/* global inherit: true */
   'use strict';
 
   (function() {
@@ -38,7 +38,7 @@
       this.element.addEventListener('click', this._onClick);
     };
 
-    Photo.prototype._onClick = function() {
+    Photo.prototype._onClick = function(event) {
       event.preventDefault();
       if (event.currentTarget.classList.contains('picture') && !this.element.classList.contains('picture-load-failure')) {
         if (typeof this.onClick === 'function') {
