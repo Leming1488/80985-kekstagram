@@ -130,6 +130,26 @@
       }));
       container.appendChild(fragment);
     }
+<<<<<<< HEAD
+=======
+    var fragment = document.createDocumentFragment();
+    var from = pageNumber * PAGE_SIZE;
+    var to = from + PAGE_SIZE;
+    var photoPage = photo.slice(from, to);
+    photoPage.forEach(function(elem) {
+      var photoElement = new Photo(elem);
+      photoElement.render();
+      photoElement.element.addEventListener('click', _onPhotoClick);
+      fragment.appendChild(photoElement.element);
+    });
+    container.appendChild(fragment);
+  }
+
+  function _onPhotoClick(event) {
+    event.preventDefault();
+    gallery.show();
+  }
+>>>>>>> master
 
     document.querySelector('.filters').classList.remove('hidden');
   })();
