@@ -9,7 +9,7 @@
       this._onDocumentClick = this._onDocumentClick.bind(this);
     };
 
-    inherit(Gallery, new PhotoBase());
+    inherit(Gallery, PhotoBase);
 
     Gallery.prototype = {
       show: function() {
@@ -21,18 +21,6 @@
         this.element.classList.add('invisible');
         document.removeEventListener('keydown', this._onDocumentKeyDown);
         this.buttonClose.removeEventListener('click', this._onDocumentClick)
-      },
-      setPictures: function(array) {
-        this._pictures = Object.create(array);
-      },
-      setCurrentPicture: function(number) {
-        this._pictures.forEach( function(item, i) {
-          if (i === number) {
-            this.element.querySelector('.gallery-overlay-image').src = this._pictures[i].url;
-            this.element.querySelector('.gallery-overlay-controls-like').textContent = this._pictures[i].likes;
-            this.element.querySelector('.gallery-overlay-controls-comments').textContent = this._pictures[i].comments;
-          }
-        }.bind(this));
       },
       _onDocumentClick: function() {
         this.hide();

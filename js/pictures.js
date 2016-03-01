@@ -1,5 +1,6 @@
 /* global Photo: true */
 /* global Gallery: true */
+/* global PhotoPreview: true */
 
 'use strict';
 
@@ -13,6 +14,7 @@
   var xhr = new XMLHttpRequest();
   var container = document.querySelector('.pictures');
   var gallery = new Gallery();
+  var photoPreview = new PhotoPreview();
 
   /**
    * Форма сортировки изображения.
@@ -121,9 +123,9 @@
       photoElement.render();
       fragment.appendChild(photoElement.element);
       photoElement.onClick = function() {
-        gallery.setPictures(photoPage);
+        photoPreview.setData(photoPage);
         gallery.show();
-        gallery.setCurrentPicture(i);
+        photoPreview.setCurrentPicture(i);
       };
     }));
     container.appendChild(fragment);
