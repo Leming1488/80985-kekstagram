@@ -6,7 +6,7 @@
 
     var PhotoPreview = function() {
       this.element = document.querySelector('.gallery-overlay');
-      this._data =  this.getData();
+      this._data = this.getData();
       this._like = this.element.querySelector('.gallery-overlay-controls-like');
       this._onClick = this._onClick.bind(this);
     };

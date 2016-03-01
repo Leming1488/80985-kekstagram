@@ -4,11 +4,11 @@
 
   PhotoBase.prototype._data = null;
 
-  PhotoBase.prototype.setData  = function(data) {
+  PhotoBase.prototype.setData = function(data) {
     this._data = data;
   };
 
-  PhotoBase.prototype.getData  = function() {
+  PhotoBase.prototype.getData = function() {
     return this._data;
   };
 

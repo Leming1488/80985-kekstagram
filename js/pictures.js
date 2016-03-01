@@ -117,9 +117,9 @@
       var from = pageNumber * PAGE_SIZE;
       var to = from + PAGE_SIZE;
       var photoPage = photo.slice(from, to);
-      renderPhotos = renderPhotos.concat(photoPage.map(function(photo, i) {
+      renderPhotos = renderPhotos.concat(photoPage.map(function(elem, i) {
         var photoElement = new Photo();
-        photoElement.setData(photo);
+        photoElement.setData(elem);
         photoElement.render();
         fragment.appendChild(photoElement.element);
         photoElement.onClick = function() {
