@@ -1,5 +1,6 @@
 /* global PhotoBase: true */
 /* global PhotoPreview: true */
+/* global inherit: true */
 
   'use strict';
   (function() {
@@ -16,7 +17,7 @@
     Gallery.prototype.show = function() {
       this.element.classList.remove('invisible');
       window.addEventListener('keydown', this._onDocumentKeyDown);
-      this.buttonClose.addEventListener('click', this._onDocumentClick)
+      this.buttonClose.addEventListener('click', this._onDocumentClick);
     };
     Gallery.prototype.hide = function() {
       this.element.classList.add('invisible');

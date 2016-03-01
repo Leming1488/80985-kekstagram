@@ -1,5 +1,6 @@
 /* global PhotoBase: true */
 /* global inherit: true */
+
   'use strict';
   (function() {
 
