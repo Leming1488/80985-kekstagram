@@ -3,6 +3,10 @@
 var PhotoBase = require(['photo-base']);
 var Inherit = require(['inherit'])
 
+/**
+ * Изображений превью в галлереи
+ * @constructor
+ */
 var PhotoPreview = function() {
   this.element = document.querySelector('.gallery-overlay-preview');
   this._data = this.getData();
@@ -12,6 +16,10 @@ var PhotoPreview = function() {
 
 Inherit(PhotoPreview, PhotoBase);
 
+/**
+ * Заполнения превью изображения
+ * @param  {[number]} number [description]
+ */
 PhotoPreview.prototype.setCurrentPicture = function(number) {
   this._data.forEach( function(item, i) {
     if (i === number) {
@@ -23,6 +31,10 @@ PhotoPreview.prototype.setCurrentPicture = function(number) {
   }.bind(this));
 };
 
+/**
+ * Лайков по клику
+ * @return {[type]} [description]
+ */
 PhotoPreview.prototype._onClick = function() {
   this._like.classList.toggle('likes-count-liked');
   if (this._like.classList.contains('likes-count-liked')) {
@@ -32,6 +44,10 @@ PhotoPreview.prototype._onClick = function() {
   }
 };
 
+/**
+ * Убираем клики и обработчики
+ * @return {[type]} [description]
+ */
 PhotoPreview.prototype.remove = function() {
   this._like.removeEventListener('click', this._onClick);
   this._like.classList.remove('likes-count-liked');

@@ -4,6 +4,10 @@ var PhotoBase = require(['photo-base']);
 var PhotoPreview = require(['photo-preview']);
 var Inherit = require(['inherit']);
 
+/**
+ * Галерея для изображений
+ * @constructor
+ */
 var Gallery = function() {
   this.element = document.querySelector('.gallery-overlay');
   this.buttonClose = document.querySelector('.gallery-overlay-close');
@@ -13,21 +17,31 @@ var Gallery = function() {
 };
 
 Inherit(Gallery, PhotoBase);
-
+/**
+ * Показ галереи
+ * @return {[Element]} [description]
+ */
 Gallery.prototype.show = function() {
   this.element.classList.remove('invisible');
   window.addEventListener('keydown', this._onDocumentKeyDown);
   this.buttonClose.addEventListener('click', this._onDocumentClick);
 };
+
+/**
+ * Cокрытие галереи
+ * @return {[Element]} [description]
+ */
 Gallery.prototype.hide = function() {
   this.element.classList.add('invisible');
   window.removeEventListener('keydown', this._onDocumentKeyDown);
   this.buttonClose.removeEventListener('click', this._onDocumentClick);
   this.photoPreview.remove();
 };
+
 Gallery.prototype._onDocumentClick = function() {
   this.hide();
 };
+
 Gallery.prototype._onDocumentKeyDown = function(event) {
   switch (String(event.keyCode)) {
     case '27':

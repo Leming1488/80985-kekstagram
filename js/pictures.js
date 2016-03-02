@@ -4,13 +4,42 @@ var Photo = require(['photo']);
 var Gallery = require(['gallery']);
 var PhotoPreview = require(['photo-preview']);
 
-
+/**
+ * Данные фото
+ * @type {Array}
+ */
 var pictures = [];
+
+/**
+ * Отфильтрированные фото данные
+ * @type {Array}
+ */
 var filteredImg = [];
+
+/**
+ *
+ * @type {Array}
+ */
 var renderPhotos = [];
+
+/**
+ * Текущая страница
+ * @type {Number}
+ */
 var currentPage = 0;
+
+/**
+ * Фильтр по умолчанию
+ * @type {String}
+ */
 var filterAct = 'popular';
+
+/**
+ * Количество фото на странице
+ * @const {Number}
+ */
 var PAGE_SIZE = 8;
+
 var xhr = new XMLHttpRequest();
 var container = document.querySelector('.pictures');
 var gallery = new Gallery();
@@ -22,6 +51,11 @@ var photoPreview = new PhotoPreview();
  */
 var sortFilterForm = document.forms['filter-sort'];
 
+/**
+ * Функция загрузки изображения при прокрутки
+ * @param {[String]} 'scroll'  [событие]
+ * @param {[function]} function()
+ */
 window.addEventListener('scroll', function() {
   clearTimeout(scrollTimeout);
   var scrollTimeout = setTimeout(function() {
@@ -33,8 +67,11 @@ window.addEventListener('scroll', function() {
   }, 100);
 });
 
+/**
+ * Функция  получения и рендера массива с картинками
+ * @return {[Element]} []
+ */
 function getImage() {
-  // Создаем запрос для получения массива с картинками
   xhr.open('GET', 'http://o0.github.io/assets/json/pictures.json');
   xhr.timeout = 30000;
   xhr.onload = function(e) {
@@ -70,7 +107,11 @@ getImage();
 
 document.querySelector('.filters').classList.add('hidden');
 
-// Сортируем массив с картинками по фильтрам
+/**
+ * Сортируем массив с картинками по фильтрам
+ * @param  {[Array]} filterSort [Массив с картинками]
+ * @return {[Element]}
+ */
 function filterPhoto(filterSort) {
   filteredImg = pictures.slice(0);
   switch (filterSort) {
@@ -103,7 +144,13 @@ function filterPhoto(filterSort) {
   }
 }
 
-// Заполняем шаблон данными из полученного массива
+/**
+ * Заполняем шаблон данными из полученного массива
+ * @param  {[Array]} photo      []
+ * @param  {[number]} pageNumber []
+ * @param  {[boolean]} clear      []
+ * @return {[Element]}            []
+ */
 function renderPhoto(photo, pageNumber, clear) {
   if (clear) {
     var elem;

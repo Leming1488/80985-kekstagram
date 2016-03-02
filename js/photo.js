@@ -4,8 +4,8 @@ var PhotoBase = require(['photo-base']);
 var Inherit = require(['inherit']);
 
 /**
+*
 * @constructor
-* @param {string} data
 */
 var Photo = function() {
   this._onClick = this._onClick.bind(this);
@@ -13,6 +13,10 @@ var Photo = function() {
 
 Inherit(Photo, PhotoBase);
 
+/**
+ * Рендер фоток по шаблону
+ * @return {[Element]} [description]
+ */
 Photo.prototype.render = function() {
   var template = document.getElementById('picture-template');
   if ('content' in template) {
@@ -51,6 +55,10 @@ Photo.prototype.remove = function() {
   this.element.removeEventListener('click', this._onClick);
 };
 
+/**
+ *
+ * @type {[null]}
+ */
 Photo.prototype.onClick = null;
 
 module.exports = Photo;
