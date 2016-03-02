@@ -32,7 +32,7 @@ var currentPage = 0;
  * Фильтр по умолчанию
  * @type {String}
  */
-var filterAct = 'popular';
+var filterAct = localStorage.getItem('filterAct') || 'popular';
 
 /**
  * Количество фото на странице
@@ -114,6 +114,7 @@ document.querySelector('.filters').classList.add('hidden');
  */
 function filterPhoto(filterSort) {
   filteredImg = pictures.slice(0);
+  localStorage.setItem('filterAct', filterSort);
   switch (filterSort) {
     case 'popular':
       filteredImg = pictures.slice(0);
