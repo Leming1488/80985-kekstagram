@@ -1,13 +1,15 @@
-/* global Resizer: true */
 /* global docCookies: true */
+
+'use strict';
+
+var Resizer = require(['resizer']);
+
+
 /**
  * @fileoverview
  * @author Igor Alexeenko (o0)
  */
 
-'use strict';
-
-(function() {
   /** @enum {string} */
   var FileType = {
     'GIF': '',
@@ -411,4 +413,3 @@
 
   cleanupResizer();
   updateBackground();
-})();

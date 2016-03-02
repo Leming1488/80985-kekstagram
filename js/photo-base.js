@@ -1,17 +1,15 @@
 'use strict';
-(function() {
-  var PhotoBase = function() {};
 
-  PhotoBase.prototype._data = null;
+var PhotoBase = function() {};
 
-  PhotoBase.prototype.setData = function(data) {
-    this._data = data;
-  };
+PhotoBase.prototype._data = null;
 
-  PhotoBase.prototype.getData = function() {
-    return this._data;
-  };
+PhotoBase.prototype.setData = function(data) {
+  this._data = data;
+};
 
-  window.PhotoBase = PhotoBase;
+PhotoBase.prototype.getData = function() {
+  return this._data;
+};
 
-})();
+module.exports = PhotoBase;
