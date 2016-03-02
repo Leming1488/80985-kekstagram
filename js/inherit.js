@@ -2,6 +2,8 @@
 
 /**
  * Функция наследования
+ * @param {Object} Child
+ * @param {Object} Parent
  * @constructor
  */
 var Inherit = function(Child, Parent) {

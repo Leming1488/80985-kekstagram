@@ -4,7 +4,7 @@ var PhotoBase = require(['photo-base']);
 var Inherit = require(['inherit']);
 
 /**
-*
+* Элемент фото
 * @constructor
 */
 var Photo = function() {
@@ -57,7 +57,7 @@ Photo.prototype.remove = function() {
 
 /**
  *
- * @type {null}
+ * @type {Object}
  */
 Photo.prototype.onClick = null;
 

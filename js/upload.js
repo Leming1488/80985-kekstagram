@@ -47,7 +47,7 @@ var Resizer = require(['resizer']);
   /**
    * Удаляет текущий объект {@link Resizer}, чтобы создать новый с другим
    * изображением.
-   * @return {null}
+   * @return {Object}
    */
   function cleanupResizer() {
     if (currentResizer) {
@@ -191,7 +191,6 @@ var Resizer = require(['resizer']);
 
   /**
    * Обработчик изменения изображения в окне
-   * @param {Event} 'resizerchange'
    */
   window.addEventListener('resizerchange', function() {
 
@@ -263,7 +262,6 @@ var Resizer = require(['resizer']);
 
   /**
    * Обработка валидации формы кадрирования.
-   * @param {Event} evt
    */
   resizeForm.addEventListener('change', function() {
 
