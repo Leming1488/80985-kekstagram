@@ -4,12 +4,11 @@
  * Функция наследования
  * @param {Object} Child
  * @param {Object} Parent
- * @constructor
  */
-var Inherit = function(Child, Parent) {
+var inherit = function(Child, Parent) {
   function Empty() {}
   Empty.prototype = Parent.prototype;
   Child.prototype = new Empty();
 };
 
-module.exports = Inherit;
+module.exports = inherit;

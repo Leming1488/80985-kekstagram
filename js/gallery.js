@@ -2,7 +2,7 @@
 
 var PhotoBase = require(['photo-base']);
 var PhotoPreview = require(['photo-preview']);
-var Inherit = require(['inherit']);
+var inherit = require(['inherit']);
 
 /**
  * Галерея для изображений
@@ -16,7 +16,7 @@ var Gallery = function() {
   this._onDocumentClick = this._onDocumentClick.bind(this);
 };
 
-Inherit(Gallery, PhotoBase);
+inherit(Gallery, PhotoBase);
 /**
  * Показ галереи
  * @return {Element}

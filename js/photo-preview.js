@@ -1,7 +1,7 @@
 'use strict';
 
 var PhotoBase = require(['photo-base']);
-var Inherit = require(['inherit'])
+var inherit = require(['inherit']);
 
 /**
  * Изображений превью в галереи
@@ -14,7 +14,7 @@ var PhotoPreview = function() {
   this._onClick = this._onClick.bind(this);
 };
 
-Inherit(PhotoPreview, PhotoBase);
+inherit(PhotoPreview, PhotoBase);
 
 /**
  * Заполнения превью изображения
