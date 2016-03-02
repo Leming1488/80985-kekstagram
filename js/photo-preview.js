@@ -18,7 +18,7 @@ Inherit(PhotoPreview, PhotoBase);
 
 /**
  * Заполнения превью изображения
- * @param  {[number]} number [description]
+ * @param  {[number]} number
  */
 PhotoPreview.prototype.setCurrentPicture = function(number) {
   this._data.forEach( function(item, i) {
@@ -33,7 +33,7 @@ PhotoPreview.prototype.setCurrentPicture = function(number) {
 
 /**
  * Лайков по клику
- * @return {[type]} [description]
+ * @return {[type]}
  */
 PhotoPreview.prototype._onClick = function() {
   this._like.classList.toggle('likes-count-liked');
@@ -46,7 +46,7 @@ PhotoPreview.prototype._onClick = function() {
 
 /**
  * Убираем клики и обработчики
- * @return {[type]} [description]
+ * @return {[type]} 
  */
 PhotoPreview.prototype.remove = function() {
   this._like.removeEventListener('click', this._onClick);

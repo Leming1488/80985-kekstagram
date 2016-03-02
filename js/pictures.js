@@ -53,7 +53,7 @@ var sortFilterForm = document.forms['filter-sort'];
 
 /**
  * Функция загрузки изображения при прокрутки
- * @param {[String]} 'scroll'  [событие]
+ * @param {[Event]}
  * @param {[function]} function()
  */
 window.addEventListener('scroll', function() {
@@ -69,7 +69,7 @@ window.addEventListener('scroll', function() {
 
 /**
  * Функция  получения и рендера массива с картинками
- * @return {[Element]} []
+ * @return {[Element]}
  */
 function getImage() {
   xhr.open('GET', 'http://o0.github.io/assets/json/pictures.json');
@@ -109,7 +109,7 @@ document.querySelector('.filters').classList.add('hidden');
 
 /**
  * Сортируем массив с картинками по фильтрам
- * @param  {[Array]} filterSort [Массив с картинками]
+ * @param  {[Array]} filterSort Массив с картинками
  * @return {[Element]}
  */
 function filterPhoto(filterSort) {
@@ -146,10 +146,10 @@ function filterPhoto(filterSort) {
 
 /**
  * Заполняем шаблон данными из полученного массива
- * @param  {[Array]} photo      []
- * @param  {[number]} pageNumber []
- * @param  {[boolean]} clear      []
- * @return {[Element]}            []
+ * @param  {[Array]} photo
+ * @param  {[number]} pageNumber
+ * @param  {[boolean]} clear
+ * @return {[Element]}           
  */
 function renderPhoto(photo, pageNumber, clear) {
   if (clear) {
