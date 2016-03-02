@@ -24,19 +24,19 @@ var renderPhotos = [];
 
 /**
  * Текущая страница
- * @type {Number}
+ * @type {number}
  */
 var currentPage = 0;
 
 /**
  * Фильтр по умолчанию
- * @type {String}
+ * @type {string}
  */
 var filterAct = localStorage.getItem('filterAct') || 'popular';
 
 /**
  * Количество фото на странице
- * @const {Number}
+ * @const {number}
  */
 var PAGE_SIZE = 8;
 
@@ -53,8 +53,6 @@ var sortFilterForm = document.forms['filter-sort'];
 
 /**
  * Функция загрузки изображения при прокрутки
- * @param {Event}
- * @param {function} function()
  */
 window.addEventListener('scroll', function() {
   clearTimeout(scrollTimeout);
@@ -109,7 +107,7 @@ document.querySelector('.filters').classList.add('hidden');
 
 /**
  * Сортируем массив с картинками по фильтрам
- * @param  {Array} filterSort Массив с картинками
+ * @param  {Array} filterSort
  * @return {Element}
  */
 function filterPhoto(filterSort) {

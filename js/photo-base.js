@@ -7,13 +7,13 @@ var PhotoBase = function() {};
 
 /**
  * Данные с изображениями
- * @type {null}
+ * @type {Object}
  */
 PhotoBase.prototype._data = null;
 
 /**
  * Установка данных
- * @param  {Object} data
+ * @param {Object} data
  */
 PhotoBase.prototype.setData = function(data) {
   this._data = data;

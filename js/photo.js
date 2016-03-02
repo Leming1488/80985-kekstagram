@@ -1,17 +1,17 @@
 'use strict';
 
 var PhotoBase = require(['photo-base']);
-var Inherit = require(['inherit']);
+var inherit = require(['inherit']);
 
 /**
-*
+* Элемент фото
 * @constructor
 */
 var Photo = function() {
   this._onClick = this._onClick.bind(this);
 };
 
-Inherit(Photo, PhotoBase);
+inherit(Photo, PhotoBase);
 
 /**
  * Рендер фоток по шаблону
@@ -57,7 +57,7 @@ Photo.prototype.remove = function() {
 
 /**
  *
- * @type {null}
+ * @type {Object}
  */
 Photo.prototype.onClick = null;
 
