@@ -10,7 +10,7 @@ var Inherit = require(['inherit']);
 var Photo = function() {
   this._onClick = this._onClick.bind(this);
 };
-debugger;
+
 Inherit(Photo, PhotoBase);
 
 Photo.prototype.render = function() {

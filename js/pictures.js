@@ -118,7 +118,6 @@ function renderPhoto(photo, pageNumber, clear) {
   var to = from + PAGE_SIZE;
   var photoPage = photo.slice(from, to);
   renderPhotos = renderPhotos.concat(photoPage.map(function(items, i) {
-    debugger;
     var photoElement = new Photo();
     photoElement.setData(items);
     photoElement.render();
