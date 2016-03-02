@@ -1,10 +1,14 @@
 'use strict';
-(function() {
-  function inherit(Child, Parent) {
-    function Empty() {}
-    Empty.prototype = Parent.prototype;
-    Child.prototype = new Empty();
-  }
 
-  window.inherit = inherit;
-})();
+/**
+ * Функция наследования
+ * @param {Object} Child
+ * @param {Object} Parent
+ */
+var inherit = function(Child, Parent) {
+  function Empty() {}
+  Empty.prototype = Parent.prototype;
+  Child.prototype = new Empty();
+};
+
+module.exports = inherit;

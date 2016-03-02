@@ -1,17 +1,30 @@
 'use strict';
-(function() {
-  var PhotoBase = function() {};
+/**
+ * Базовое изображение
+ * @constructor
+ */
+var PhotoBase = function() {};
 
-  PhotoBase.prototype._data = null;
+/**
+ * Данные с изображениями
+ * @type {Object}
+ */
+PhotoBase.prototype._data = null;
 
-  PhotoBase.prototype.setData = function(data) {
-    this._data = data;
-  };
+/**
+ * Установка данных
+ * @param {Object} data
+ */
+PhotoBase.prototype.setData = function(data) {
+  this._data = data;
+};
 
-  PhotoBase.prototype.getData = function() {
-    return this._data;
-  };
+/**
+ * Полученние данных
+ * @return {Object}
+ */
+PhotoBase.prototype.getData = function() {
+  return this._data;
+};
 
-  window.PhotoBase = PhotoBase;
-
-})();
+module.exports = PhotoBase;
