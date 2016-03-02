@@ -32,7 +32,7 @@ var currentPage = 0;
  * Фильтр по умолчанию
  * @type {string}
  */
-var filterAct = 'popular';
+var filterAct = localStorage.getItem('filterAct') || 'popular';
 
 /**
  * Количество фото на странице
@@ -112,9 +112,11 @@ document.querySelector('.filters').classList.add('hidden');
  */
 function filterPhoto(filterSort) {
   filteredImg = pictures.slice(0);
+  localStorage.setItem('filterAct', filterSort);
   switch (filterSort) {
     case 'popular':
       filteredImg = pictures.slice(0);
+      sortFilterForm.elements[0].checked = true;
       break;
     case 'new':
       var today = new Date();
@@ -125,11 +127,13 @@ function filterPhoto(filterSort) {
       filteredImg = filteredImg.filter(function(el) {
         return Date.parse(el.date) > todaySet;
       });
+      sortFilterForm.elements[1].checked = true;
       break;
     case 'discussed':
       filteredImg = filteredImg.sort(function(a, b) {
         return b.comments - a.comments;
       });
+      sortFilterForm.elements[2].checked = true;
       break;
   }
   if (window.pageYOffset + document.documentElement.clientHeight === document.documentElement.scrollHeight) {
