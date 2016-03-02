@@ -116,6 +116,7 @@ function filterPhoto(filterSort) {
   switch (filterSort) {
     case 'popular':
       filteredImg = pictures.slice(0);
+      sortFilterForm.elements[0].checked = true;
       break;
     case 'new':
       var today = new Date();
@@ -126,11 +127,13 @@ function filterPhoto(filterSort) {
       filteredImg = filteredImg.filter(function(el) {
         return Date.parse(el.date) > todaySet;
       });
+      sortFilterForm.elements[1].checked = true;
       break;
     case 'discussed':
       filteredImg = filteredImg.sort(function(a, b) {
         return b.comments - a.comments;
       });
+      sortFilterForm.elements[2].checked = true;
       break;
   }
   if (window.pageYOffset + document.documentElement.clientHeight === document.documentElement.scrollHeight) {
