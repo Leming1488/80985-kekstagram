@@ -47,7 +47,7 @@ var Resizer = require(['resizer']);
   /**
    * Удаляет текущий объект {@link Resizer}, чтобы создать новый с другим
    * изображением.
-   * @return {[null]}
+   * @return {null}
    */
   function cleanupResizer() {
     if (currentResizer) {
@@ -59,7 +59,7 @@ var Resizer = require(['resizer']);
 
   /**
    * Ставит одну из трех случайных картинок на фон формы загрузки.
-   * @return {[Element]}
+   * @return {Element}
    */
   function updateBackground() {
     var images = [
@@ -129,7 +129,7 @@ var Resizer = require(['resizer']);
 
   /**
    * @param {Action} action
-   * @param {string=} message
+   * @param {string} message
    * @return {Element}
    */
   function showMessage(action, message) {
@@ -191,7 +191,7 @@ var Resizer = require(['resizer']);
 
   /**
    * Обработчик изменения изображения в окне
-   * @param {[Event]} 'resizerchange'
+   * @param {Event} 'resizerchange'
    */
   window.addEventListener('resizerchange', function() {
 
@@ -288,7 +288,6 @@ var Resizer = require(['resizer']);
 
       /**
        * Устанавливаем  фильтр по умолчанию.
-       * @param  {[type]
        */
       for (var i = 0; i < filters.length; i++) {
         var filterValue = filters[i];

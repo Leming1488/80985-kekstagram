@@ -15,7 +15,7 @@ Inherit(Photo, PhotoBase);
 
 /**
  * Рендер фоток по шаблону
- * @return {[Element]}
+ * @return {Element}
  */
 Photo.prototype.render = function() {
   var template = document.getElementById('picture-template');
@@ -57,7 +57,7 @@ Photo.prototype.remove = function() {
 
 /**
  *
- * @type {[null]}
+ * @type {null}
  */
 Photo.prototype.onClick = null;
 

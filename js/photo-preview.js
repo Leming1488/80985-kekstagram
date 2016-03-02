@@ -18,7 +18,7 @@ Inherit(PhotoPreview, PhotoBase);
 
 /**
  * Заполнения превью изображения
- * @param  {[number]} number
+ * @param  {number} number
  */
 PhotoPreview.prototype.setCurrentPicture = function(number) {
   this._data.forEach( function(item, i) {
@@ -46,7 +46,7 @@ PhotoPreview.prototype._onClick = function() {
 
 /**
  * Убираем клики и обработчики
- * @return {[type]} 
+ * @return {type}
  */
 PhotoPreview.prototype.remove = function() {
   this._like.removeEventListener('click', this._onClick);

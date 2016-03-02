@@ -19,7 +19,7 @@ var Gallery = function() {
 Inherit(Gallery, PhotoBase);
 /**
  * Показ галереи
- * @return {[Element]}
+ * @return {Element}
  */
 Gallery.prototype.show = function() {
   this.element.classList.remove('invisible');
@@ -29,7 +29,7 @@ Gallery.prototype.show = function() {
 
 /**
  * Cокрытие галереи
- * @return {[Element]}
+ * @return {Element}
  */
 Gallery.prototype.hide = function() {
   this.element.classList.add('invisible');
