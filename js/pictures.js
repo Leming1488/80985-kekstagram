@@ -74,6 +74,8 @@ window.addEventListener('hashchange', function() {
   var localH = str.match(regexp);
   if ( localH ) {
     gallery.show();
+  } else {
+    gallery.hide();
   }
 });
 
