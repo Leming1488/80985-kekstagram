@@ -36,6 +36,7 @@ Gallery.prototype.hide = function() {
   window.removeEventListener('keydown', this._onDocumentKeyDown);
   this.buttonClose.removeEventListener('click', this._onDocumentClick);
   this.photoPreview.remove();
+  location.hash = '';
 };
 
 Gallery.prototype._onDocumentClick = function() {

@@ -22,7 +22,7 @@ inherit(PhotoPreview, PhotoBase);
  */
 PhotoPreview.prototype.setCurrentPicture = function(number) {
   this._data.forEach( function(item, i) {
-    if (i === number) {
+    if ('#' + item.url === number) {
       this.element.querySelector('.gallery-overlay-image').src = this.getData()[i].url;
       this._like.textContent = this.getData()[i].likes;
       this.element.querySelector('.comments-count').textContent = this.getData()[i].comments;

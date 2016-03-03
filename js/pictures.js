@@ -66,6 +66,20 @@ window.addEventListener('scroll', function() {
 });
 
 /**
+ * Функция проверки изменения хеша
+ */
+window.addEventListener('hashchange', function() {
+  var regexp = /#photos\/(\S+)/;
+  var str = location.hash;
+  var localH = str.match(regexp);
+  if ( localH ) {
+    if (localH[0] === '#photos/2.jpg') {
+      gallery.hide();
+    }
+  }
+});
+
+/**
  * Функция  получения и рендера массива с картинками
  * @return {Element}
  */
@@ -166,15 +180,19 @@ function renderPhoto(photo, pageNumber, clear) {
   var from = pageNumber * PAGE_SIZE;
   var to = from + PAGE_SIZE;
   var photoPage = photo.slice(from, to);
-  renderPhotos = renderPhotos.concat(photoPage.map(function(items, i) {
+  renderPhotos = renderPhotos.concat(photoPage.map(function(items) {
     var photoElement = new Photo();
     photoElement.setData(items);
     photoElement.render();
     fragment.appendChild(photoElement.element);
+    /**
+     * Обработчик клика по фото в списке
+     */
     photoElement.onClick = function() {
+      location.hash = items.url;
       photoPreview.setData(photoPage);
       gallery.show();
-      photoPreview.setCurrentPicture(i);
+      photoPreview.setCurrentPicture(location.hash);
     };
   }));
   container.appendChild(fragment);
