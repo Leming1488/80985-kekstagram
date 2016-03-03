@@ -40,6 +40,12 @@ var filterAct = localStorage.getItem('filterAct') || 'popular';
  */
 var PAGE_SIZE = 8;
 
+/**
+ * Регулярка для хеша фото
+ * @const {string}
+ */
+var REGEXP = /#photos\/(\S+)/;
+
 var xhr = new XMLHttpRequest();
 var container = document.querySelector('.pictures');
 var gallery = new Gallery();
@@ -69,10 +75,9 @@ window.addEventListener('scroll', function() {
  * Функция проверки изменения хеша
  */
 window.addEventListener('hashchange', function() {
-  var regexp = /#photos\/(\S+)/;
   var str = location.hash;
-  var localH = str.match(regexp);
-  if ( localH ) {
+  var localH = str.match(REGEXP);
+  if (localH) {
     photoPreview.setCurrentPicture(location.hash);
     gallery.show();
   } else {
@@ -196,6 +201,13 @@ function renderPhoto(photo, pageNumber, clear) {
     };
   }));
   container.appendChild(fragment);
+  var str = location.hash;
+  var localH = str.match(REGEXP);
+  if (localH) {
+    photoPreview.setData(photoPage);
+    photoPreview.setCurrentPicture(location.hash);
+    gallery.show();
+  }
 }
 
 document.querySelector('.filters').classList.remove('hidden');
