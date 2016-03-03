@@ -73,6 +73,7 @@ window.addEventListener('hashchange', function() {
   var str = location.hash;
   var localH = str.match(regexp);
   if ( localH ) {
+    photoPreview.setCurrentPicture(location.hash);
     gallery.show();
   } else {
     gallery.hide();
