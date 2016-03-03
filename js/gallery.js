@@ -1,6 +1,6 @@
 'use strict';
 
-var PhotoPreview = require(['photo-preview']);
+var PhotoPreview = require('photo-preview');
 
 /**
  * Галерея для изображений

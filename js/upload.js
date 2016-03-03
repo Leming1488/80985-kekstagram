@@ -2,7 +2,7 @@
 
 'use strict';
 
-var Resizer = require(['resizer']);
+var Resizer = require('resizer');
 
 
 /**

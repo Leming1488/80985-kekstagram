@@ -1,8 +1,8 @@
 'use strict';
 
-var Photo = require(['photo']);
-var Gallery = require(['gallery']);
-var PhotoPreview = require(['photo-preview']);
+var Photo = require('photo');
+var Gallery = require('gallery');
+var PhotoPreview = require('photo-preview');
 
 /**
  * Данные фото

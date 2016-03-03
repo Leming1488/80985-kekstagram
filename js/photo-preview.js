@@ -1,7 +1,7 @@
 'use strict';
 
-var PhotoBase = require(['photo-base']);
-var inherit = require(['inherit']);
+var PhotoBase = require('photo-base');
+var inherit = require('inherit');
 
 /**
  * Изображений превью в галереи
