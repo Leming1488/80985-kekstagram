@@ -73,9 +73,7 @@ window.addEventListener('hashchange', function() {
   var str = location.hash;
   var localH = str.match(regexp);
   if ( localH ) {
-    if (localH[0] === '#photos/2.jpg') {
-      gallery.hide();
-    }
+    gallery.show();
   }
 });
 
@@ -191,7 +189,6 @@ function renderPhoto(photo, pageNumber, clear) {
     photoElement.onClick = function() {
       location.hash = items.url;
       photoPreview.setData(photoPage);
-      gallery.show();
       photoPreview.setCurrentPicture(location.hash);
     };
   }));
