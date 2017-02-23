@@ -29,6 +29,6 @@ function getMessage(a, b) {
       }
       break;
     default:
-      return 'hello' + b;
+      return 'error';
   }
 }
